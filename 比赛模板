@@ -11,6 +11,8 @@ using ll = long long;
 using pii = pair<int, int>;
 
 const int MOD = 1e9 + 7;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
 
 template<class T>
 void PRINT(T x){
