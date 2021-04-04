@@ -17,6 +17,8 @@ const int MOD = 1e9 + 7;
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 
+//__gcd(int a, int b);
+//lower_bound(x.begin(), x.end(), value);
 template<class T>
 void PRINT(T x){
     for (auto p = x.begin(); p != x.end();p++)
