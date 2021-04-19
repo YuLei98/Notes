@@ -22,7 +22,7 @@ class Solution {
 private:
 	int N, K;
 	int cnt;             //可用状态的数量
-	int state[160];		//可用状态
+	int state[160];		//可用状态     //第一个可用状态为0
 	int num[160];         //state[i]放的国王数
 public:
 	Solution() {}
@@ -37,8 +37,15 @@ public:
 			num[cnt] = sum;
 		}
 	}
-	void Sol() {	    
-		f[0][1][0]=1;       //初始化第0行放0个国王的方案为1
+    void print_state(){
+        for(int i = 0; i <= cnt; i++){
+            cout << bitset<6>(state[i]) << " ";
+        }
+        cout << endl;
+    }
+	void Sol() {	
+        Pre();
+		f[0][1][0]=1;       //初始化第0行状态全为0放0个国王的方案为1
 		for (int i = 1; i <= N; ++i) {
 			for (int j = 1; j <= cnt; ++j) {    //枚举第i行的状态
 				for (int k = 0; k <= K; ++k) {   //枚举前i行放置的国王数
@@ -63,8 +70,8 @@ int main() {
 	int N, K;
 	cin >> N >> K;
 	Solution s(N,K);
-	s.Pre();
 	s.Sol();
+    	//s.print_state();
 	return 0;
 }
 '''
