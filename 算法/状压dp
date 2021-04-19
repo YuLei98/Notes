@@ -17,7 +17,7 @@ Code
 #include<iostream>
 #include<vector>
 using namespace std;
-long long f[11][160][160];  //f[i][j][k]表示第i行是状态j共放了k个国王的方案数    //注意数组大小
+long long f[11][160][160];  //f[i][j][k]表示第i行是状态j共放了k个国王的方案数
 class Solution {
 private:
 	int N, K;
@@ -38,7 +38,7 @@ public:
 		}
 	}
 	void Sol() {	    
-	    f[0][1][0]=1;       //初始化第0行放0个国王的方案为1
+		f[0][1][0]=1;       //初始化第0行放0个国王的方案为1
 		for (int i = 1; i <= N; ++i) {
 			for (int j = 1; j <= cnt; ++j) {    //枚举第i行的状态
 				for (int k = 0; k <= K; ++k) {   //枚举前i行放置的国王数
