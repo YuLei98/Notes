@@ -1,5 +1,5 @@
 # LeetCode
-雷某人的leetcode刷题记录
+* 雷某人的leetcode刷题记录
 
 84.柱状图中最大矩形(单调栈)
 
