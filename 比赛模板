@@ -29,4 +29,9 @@ void PRINT(T x){
     {                                         \
         PRINT(x[i]);                          \
     }
-
+template <typename T> inline void read(T& x)
+{
+    x=0;char ch=getchar();ll f=1;
+    while(!isdigit(ch)){if(ch=='-')f=-1;ch=getchar();}
+    while(isdigit(ch)){x=(x<<3)+(x<<1)+(ch^48);ch=getchar();}x*=f;
+}
