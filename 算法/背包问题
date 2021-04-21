@@ -126,7 +126,7 @@
     0<N,V≤100
     0<vi,wi,si≤100
     
-    //思路：将每种背包分解成二进制组合，让这些二进制可以组合成任意数量的背包，如13 = 001 + 010 + 100 + 6
+    //思路：将每种背包分解成二进制组合，让这些二进制可以组合成任意数量的背包，如13 = 001 + 010 + 100 + 6, 题目就转化成了0-1背包
 
     '''
     #include <iostream>
@@ -155,7 +155,7 @@
         }
         int N = W.size();
     
-        vector<vector<int>> dp(N , vector<int>(M + 1));
+        vector<vector<int>> dp(N , vector<int>(M + 1));             //数据量大用1D数组
         for (int i = 1; i < N; i++){
             for (int j = 0; j <= M; j++){
                 if (j < W[i]) dp[i][j] = dp[i - 1][j];
