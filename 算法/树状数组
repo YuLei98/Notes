@@ -31,7 +31,7 @@ int lowbit(int x) {
 
 //刚开始写的错误的
 /*void update(vector<int>& C, int i, int x) {
-    for (C[i] += x; i <= n; i += lowbit(i));      //C[i] += x;放在第一句，不管怎样它都只执行了一次
+    for (C[i] += x; i <= n; i += lowbit(i));                         //C[i] += x;放在第一句，不管怎样它都只执行了一次
 }
 
 int get_sum(vector<int>& C, int i) {
@@ -41,21 +41,22 @@ int get_sum(vector<int>& C, int i) {
 }*/
 
 void update(vector<int>& C, int i, int x) {
-    //1
-    /*while (i <= n) {
+    /*while (i <= n) {                                             //1
         C[i] += x;
         i += lowbit(i);
     }*/
-    for (; i <= n; C[i] += x, i += lowbit(i));
+    
+    for (; i <= n; C[i] += x, i += lowbit(i));                     //2
 }
 
 int get_sum(vector<int>& C, int i) {
-    int res = 0;
-    //while (i > 0) {
+    int res = 0;    
+    //while (i > 0) {                                             //1
     //    res += C[i];
     //    i -= lowbit(i);
     //}
-    for (; i; res += C[i], i -= lowbit(i));
+    
+    for (; i; res += C[i], i -= lowbit(i));                       //2
     return res;
 }
 int main() {
