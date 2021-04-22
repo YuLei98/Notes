@@ -31,12 +31,12 @@ int lowbit(int x) {
 
 //刚开始写的错误的
 /*void update(vector<int>& C, int i, int x) {
-    for (C[i] += x; i <= n; i += lowbit(i));
+    for (C[i] += x; i <= n; i += lowbit(i));      //C[i] += x;放在第一句，不管怎样它都只执行了一次
 }
 
 int get_sum(vector<int>& C, int i) {
     int res = 0;
-    for (res += C[i]; i ; i -= lowbit(i));
+    for (res += C[i]; i ; i -= lowbit(i));     //同上
     return res;
 }*/
 
