@@ -18,5 +18,5 @@
    - 完全背包
  ## [字符串](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95.md)
    - KMP算法
- ## [树状数组]
+ ## 树状数组
    - [洛谷P3374 【模板】树状数组 1](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84)
