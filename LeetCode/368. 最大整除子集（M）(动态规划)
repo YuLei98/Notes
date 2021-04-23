@@ -70,18 +70,16 @@ class Solution:
         for i in range(l):
             for j in range(i):
                 if nums[i] % nums[j] == 0 and f[j] + 1 > f[i]:
-                    f[i] = f[j] + 1
-                    g[i] = j     
+                    f[i], g[i] = f[j] + 1, j
 
         m = 0
         for i in range(l):
             if f[i] > m:
-                m = f[i]
-                last = i
+                m, last = f[i], i
         res = []
         while g[last] != last:
             res.append(nums[last])
             last = g[last]
         res.append(nums[last])
-        return res       
+        return res      
 '''
