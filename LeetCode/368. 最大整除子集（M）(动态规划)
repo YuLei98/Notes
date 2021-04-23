@@ -60,3 +60,30 @@ public:
     }
 };
 '''
+
+'''py
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        l = len(nums)
+        f = [1 for i in range(l)]
+        g = [i for i in range(l)]
+        for i in range(l):
+            for j in range(i):
+                if nums[i] % nums[j] == 0 and f[j] + 1 > f[i]:
+                    f[i] = f[j] + 1
+                    g[i] = j     
+
+        m = 0
+        for i in range(l):
+            if f[i] > m:
+                m = f[i]
+                last = i
+        res = []
+        while g[last] != last:
+            res.append(nums[last])
+            last = g[last]
+        res.append(nums[last])
+        return res
+        
+'''
