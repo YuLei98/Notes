@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        const int n = nums.size();
+        sort(nums.begin(), nums.end());
+
+        vector<int> f(n, 0), g(n);                      //f为状态转移数组，g记录f由哪个下标表示的数转移而来
+        for (int i = 0; i < n; ++i){
+            g[i] = i;                    
+            //int len = 1, pre = i;                                   //2
+            for (int j = 0; j < i; ++j){
+                if (nums[i] % nums[j] == 0 && f[j] + 1 > f[i]){
+                    f[i] = f[j] + 1;
+                    g[i] = j;
+                }
+                /*if (nums[i] % nums[j] == 0 && f[j] + 1 > len){        //2
+                    len = f[j] + 1;
+                    pre = j;
+                }*/                                                       //2
+            }
+            //f[i] = len;                                                 //2
+            //g[i] = pre;                                                  //2
+        }
+
+        int last = max_element(f.begin(), f.end()) - f.begin();
+        
+        vector<int> res;
+        while(g[last] != last){
+            res.push_back(nums[last]);
+            last = g[last];
+        }
+        res.push_back(nums[last]);
+        reverse(res.begin(), res.end());
+
+        return res;
+        
+    }
+};
