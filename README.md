@@ -22,3 +22,4 @@
    - KMP算法
  ## 树状数组
    - [洛谷P3374 【模板】树状数组 1](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84)
+ ## 线段树
