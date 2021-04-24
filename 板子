@@ -1,3 +1,5 @@
+#pragma GCC optimize("Ofast")
+#include<bits/stdc++.h>
 #define PB push_back
 #define VI vector<int>
 #define VVI vector<vector<int>>
