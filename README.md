@@ -7,8 +7,9 @@
   - [363.矩形区域不超过 K 的最大数值和（H](https://github.com/YuLei98/Notes/blob/master/LeetCode/363.%20%E7%9F%A9%E5%BD%A2%E5%8C%BA%E5%9F%9F%E4%B8%8D%E8%B6%85%E8%BF%87K%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0%E5%80%BC%E5%92%8C(Hard)%20(%E5%89%8D%E7%BC%80%E5%92%8C))
  ## 树状数组
  ## BFS
-  - [1654.到家的最少跳跃次数（M）(BFS)](https://github.com/YuLei98/Notes/blob/master/LeetCode/1654.%E5%88%B0%E5%AE%B6%E7%9A%84%E6%9C%80%E5%B0%91%E8%B7%B3%E8%B7%83%E6%AC%A1%E6%95%B0%EF%BC%88M%EF%BC%89(BFS))
-  
+  - [1654.到家的最少跳跃次数（M](https://github.com/YuLei98/Notes/blob/master/LeetCode/1654.%E5%88%B0%E5%AE%B6%E7%9A%84%E6%9C%80%E5%B0%91%E8%B7%B3%E8%B7%83%E6%AC%A1%E6%95%B0%EF%BC%88M%EF%BC%89(BFS))
+ ## DFS
+  - [897.递增顺序搜索树（E](https://github.com/YuLei98/Notes/blob/master/LeetCode/897.%E9%80%92%E5%A2%9E%E9%A1%BA%E5%BA%8F%E6%90%9C%E7%B4%A2%E6%A0%91%EF%BC%88E%EF%BC%89(DFS))
 
 
 84. 柱状图中最大矩形(单调栈)
