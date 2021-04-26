@@ -1,0 +1,73 @@
+Range Maximum/Minimum Querry算法
+
+题目：
+南将军统率着N个士兵，士兵分别编号为1~N,南将军经常爱拿某一段编号内杀敌数最高的人与杀敌数最低的人进行比较，计算出两个人的杀敌数差值，用这种方法一方面能鼓舞杀敌数高的人，另一方面也算是批评杀敌数低的人，起到了很好的效果。
+
+所以，南将军经常问军师小工第i号士兵到第j号士兵中，杀敌数最高的人与杀敌数最低的人之间军功差值是多少。
+
+现在，请你写一个程序，帮小工回答南将军每次的询问吧。
+
+注意，南将军可能询问很多次。
+
+输入
+只有一组测试数据
+第一行是两个整数N,Q，其中N表示士兵的总数。Q表示南将军询问的次数。(1<N<=100000,1<Q<=1000000)
+随后的一行有N个整数Vi(0<=Vi<100000000)，分别表示每个人的杀敌数。
+再之后的Q行，每行有两个正正数m,n，表示南将军询问的是第m号士兵到第n号士兵。
+输出
+对于每次询问，输出第m号士兵到第n号士兵之间所有士兵杀敌数的最大值与最小值的差。
+样例输入
+5 2
+1 2 6 9 3
+1 2
+2 4
+样例输出
+1
+7
+
+思路：用动态规划预处理，时间复杂度O(nlogn)，查询时间复杂度（O(1))
+'''cpp
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+#include<math.h>
+using namespace std;
+#define N 100005
+int dpmax[N][20],dpmin[N][20];
+void RMQ(int num)
+{
+	int i,j;
+	for(j=1;j<20;++j)
+		for(i=1;i<=num;++i)
+		{
+			if(i+(1<<j)-1<=num)
+			{
+				dpmax[i][j] = max(dpmax[i][j - 1], dpmax[i + (1 << (j - 1))][j - 1]);  
+				dpmin[i][j] = min(dpmin[i][j - 1], dpmin[i + (1 << (j - 1))][j - 1]);  
+			}
+		}
+}
+int main()
+{
+	int n,t;
+	cin>>n>>t;
+	int i;
+	for(i=1;i<=n;++i)
+	{
+		cin>>dpmax[i][0];
+		dpmin[i][0]=dpmax[i][0];
+	}
+	RMQ(n);
+	int a,b,k;
+	while(t--)
+	{
+		cin>>a>>b;
+		k=(int)(log(b-a+1.0)/log(2.0));                          //取k = log2(b-a+1)       //log()函数，以10为底。定义以m为底的函数，log(n)/log(m)
+		int maxans=max(dpmax[a][k],dpmax[b-(1<<k)+1][k]);
+		int minans=min(dpmin[a][k],dpmin[b-(1<<k)+1][k]);
+		cout<<maxans-minans<<endl;
+	}
+	return 0;
+}
+'''
