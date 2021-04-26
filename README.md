@@ -10,7 +10,8 @@
   - [1654.到家的最少跳跃次数（M](https://github.com/YuLei98/Notes/blob/master/LeetCode/1654.%E5%88%B0%E5%AE%B6%E7%9A%84%E6%9C%80%E5%B0%91%E8%B7%B3%E8%B7%83%E6%AC%A1%E6%95%B0%EF%BC%88M%EF%BC%89(BFS))
  ## DFS
   - [897.递增顺序搜索树（E](https://github.com/YuLei98/Notes/blob/master/LeetCode/897.%E9%80%92%E5%A2%9E%E9%A1%BA%E5%BA%8F%E6%90%9C%E7%B4%A2%E6%A0%91%EF%BC%88E%EF%BC%89(DFS))
-
+ ## 二分法
+  - [1011. 在D天内送达包裹的能力（M）(二分)](https://github.com/YuLei98/Notes/blob/master/LeetCode/1011.%20%E5%9C%A8D%E5%A4%A9%E5%86%85%E9%80%81%E8%BE%BE%E5%8C%85%E8%A3%B9%E7%9A%84%E8%83%BD%E5%8A%9B%EF%BC%88M%EF%BC%89(%E4%BA%8C%E5%88%86))
 
 84. 柱状图中最大矩形(单调栈)
 1727. 重新排列后的最大子矩阵(224th Weekly Contest T3)
