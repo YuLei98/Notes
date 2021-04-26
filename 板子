@@ -1,4 +1,22 @@
-#include<bits/stdc++.h>
+//#define LOCAL
+#ifndef LOCAL
+    #include<bits/stdc++.h>
+#else
+    #include<iostream>
+    #include<vector>
+    #include<queue>
+    #include<stack>
+    #include<string>
+    #include<map>
+    #include<set>
+    #include<utility>
+    #include<algorithm>
+    #include<numeric>
+    #include<climits>
+    #include<bitset>
+    #include<functional>
+    #include<cmath>
+#endif // LOCAL
 /*
                    _ooOoo_
                   o8888888o
@@ -19,13 +37,13 @@
 ======`-.____`-.___\_____/___.-`____.-'======
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-         I have a dream!A AK deram!!
+         I have a dream!An AK dream!!
  orz orz orz orz orz orz orz orz orz orz orz
  orz orz orz orz orz orz orz orz orz orz orz
  orz orz orz orz orz orz orz orz orz orz orz
 
 */
-namespace luoyu{
+namespace luoyu {
     using namespace std;
     #pragma GCC optimize("Ofast")   
     #define PB push_back
@@ -40,36 +58,35 @@ namespace luoyu{
     #define FOR(i, x) for (int i = 0, n = x.size(); i < n;i++)
     #define ALL(x) x.begin(), x.end()
 
-//     using ll = long long;
-//     using pii = pair<int, int>;
     typedef long long ll;
-    typedef pair<int,int> pii;
-    const double pi=acos(-1.0);
+    typedef pair<int, int> pii;
+    const double pi = acos(-1.0);
     const int MOD = 1e9 + 7;
-    int dx[4] = {1, 0, -1, 0};
-    int dy[4] = {0, 1, 0, -1};
+    int dx[4] = { 1, 0, -1, 0 };
+    int dy[4] = { 0, 1, 0, -1 };
 
     //__gcd(int a, int b);
     //lower_bound(x.begin(), x.end(), value);
     //iota(x.begin(),x.end(),val); val,val+1,val+2....
     //fill(x.begin(),x.end(),val); val,val,val....
+    //accumulate(x.begin(), x.end(), start_val);
 
     template<class T>
-    void PRINT(T x){
-        for (auto p = x.begin(); p != x.end();p++)
+    void PRINT(T x) {
+        for (auto p = x.begin(); p != x.end(); p++)
             cout << *p << " ";
         cout << endl;
     }
-    #define PRINT_2(x)                            \
+#define PRINT_2(x)                            \
         for (int i = 0, n = x.size(); i < n; i++) \
         {                                         \
             PRINT(x[i]);                          \
         }
     template <typename T> inline void read(T& x)
     {
-        x=0;char ch=getchar();ll f=1;
-        while(!isdigit(ch)){if(ch=='-')f=-1;ch=getchar();}
-        while(isdigit(ch)){x=(x<<3)+(x<<1)+(ch^48);ch=getchar();}x*=f;
+        x = 0; char ch = getchar(); ll f = 1;
+        while (!isdigit(ch)) { if (ch == '-')f = -1; ch = getchar(); }
+        while (isdigit(ch)) { x = (x << 3) + (x << 1) + (ch ^ 48); ch = getchar(); }x *= f;
     }
 }//namespace luoyu
 
