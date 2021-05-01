@@ -49,7 +49,7 @@
 */
 namespace luoyu {
     using namespace std;
-#pragma GCC optimize("Ofast")   
+//#pragma GCC optimize("Ofast")   
 #define PB push_back
 #define fi first
 #define se second
