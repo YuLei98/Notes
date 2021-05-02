@@ -27,10 +27,11 @@
    - 0-1背包
    - 完全背包
    - 多重背包
+   - 混合背包
    - 二维背包
  ## [字符串](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95.md)
    - KMP算法
  ## [树状数组](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84)
  ## 线段树
- ## [RMQ](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/RMQ)
+ ## [RMQ(Range Maxmum/Minimum Querry](https://github.com/YuLei98/Notes/blob/master/%E7%AE%97%E6%B3%95/RMQ)
    
