@@ -76,7 +76,8 @@ namespace luoyu {
     //iota(x.begin(),x.end(),val); val,val+1,val+2....
     //fill(x.begin(),x.end(),val); val,val,val....
     //accumulate(x.begin(), x.end(), start_val);
-
+    //next_permutation(x.begin(), x.end());
+    
     template<class T>
     void PRINT(T x) {
         for (auto p = x.begin(); p != x.end(); p++)
@@ -88,17 +89,20 @@ namespace luoyu {
         {                                         \
             PRINT(x[i]);                          \
         }
-    template <typename T> inline void read(T& x)
+    /*template <typename T> inline void read(T& x)
     {
         x = 0; char ch = getchar(); ll f = 1;
         while (!isdigit(ch)) { if (ch == '-')f = -1; ch = getchar(); }
         while (isdigit(ch)) { x = (x << 3) + (x << 1) + (ch ^ 48); ch = getchar(); }x *= f;
+    }*/
+    void quick_read(){
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
     }
 }//namespace luoyu
 
 using namespace luoyu;
 //int main() {
-//    ios::sync_with_stdio(false);
-//    cin.tie(nullptr);
-//    cout.tie(nullptr);
+//      quick_read();
 //}
