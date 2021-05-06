@@ -77,6 +77,7 @@ namespace luoyu {
     //fill(x.begin(),x.end(),val); val,val,val....
     //accumulate(x.begin(), x.end(), start_val);
     //next_permutation(x.begin(), x.end());
+    //prev(iterator[,n])将迭代器往后移n个单位，第二个为默认参数=1，返回一个迭代器所在新位置，同理有next(it [,n])
     
     template<class T>
     void PRINT(T x) {
