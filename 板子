@@ -58,7 +58,7 @@ namespace luoyu {
 #define UB upper_bound
 #define EB emplace_back
 #define CE cout << endl
-#define FOR(i,a,b) for(int i=(a);i<(b);++i)
+#define FOR(i,a,b) for(int i=(a), _i=(b);i<_i;++i)
 #define ALL(x) x.begin(), x.end()
 #define SZ(a) ((int)a.size())
 
