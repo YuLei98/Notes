@@ -29,7 +29,47 @@
 第二次跑出，编号3带着他后面的1个人（也就是4）跑到最前面，则队伍变成：
 3 4 2 5 1
 
-'''cpp超时
+'''cpp，AC, 时间复杂度O(n)
+/*
+    思路：用双链表本质和单链表差不多，也要从头开始找小队对手那个人所在位置，可以用数组模拟双链表，用一个数组指向前面那个人。这样就省去了从头开始找变换的小队队首前面的那个人
+*/
+int main() {
+    quick_read();
+    int n, q;                                    //n个人， q次队伍变换
+    scanf("%d%d", &n, &q);
+
+    VI nxt(n + 1), ppre(n + 1);                  //nxt[i]表示i后面那个人，ppre[i]表示i前面那个人
+    iota(nxt.begin(), nxt.end(), 1);             //nxt[i] = i + 1;   0 <= i < n
+    nxt[n] = -1;                                 //最后一个人
+    iota(ppre.begin(), ppre.end(), -1);          //初始化ppre数组
+    int a, b, p, pre;                            //a, b表示输入
+    while(q--){
+        scanf("%d%d", &a, &b);                     //a为变换的小队的队首那个人
+        if (a == nxt[0]) continue;                 //如果要变换的队伍的小队从大队伍开始，直接跳过
+        pre = ppre[a];                            //pre表示变换的那个队伍前面的那个人，
+        p = a;                                      
+        for (int i = 0; i < b && nxt[p] != -1; ++i) p = nxt[p];     //找变换的那个队伍的最后一个人
+        nxt[pre] = nxt[p];
+        if (nxt[p] != -1)
+            ppre[nxt[p]] = pre;
+        nxt[p] = nxt[0];
+        ppre[nxt[0]] = p;
+        nxt[0] = a;
+        ppre[a] = 0;
+    }
+    int cur = nxt[0];
+    while( cur != -1){
+        printf("%d ", cur);
+        cur = nxt[cur];
+    }
+    return 0;
+}
+'''
+
+
+
+
+'''cpp超时，时间复杂度O(nq)
 struct Node{
     int x;
     Node * next;
@@ -74,4 +114,34 @@ int main() {
     }
     return 0;
 }
+'''
+
+
+
+
+'''cpp，超时，和上面一样的思想，只是数组模拟单链表，时间复杂度也是O(n2)
+int main() {
+    quick_read();
+    int n, qq;
+    scanf("%d%d", &n, &qq); 
+    VI nxt(n + 1);
+    iota(nxt.begin(), nxt.end(), 1);
+    nxt[n] = -1;
+    int a, b, p, q, pre;
+    while(qq--){
+        scanf("%d%d", &a, &b);
+        pre = 0;
+        while (nxt[pre] != a) pre = nxt[pre];
+        p = nxt[pre];
+        q = p;
+        for (int i = 0; i < b && nxt[q] != -1; ++i) q = nxt[q];
+        nxt[pre] = nxt[q];
+        nxt[q] = nxt[0];
+        nxt[0] = p;
+    }
+    int cur = nxt[0];
+    while( cur != -1){
+        printf("%d ", cur);
+        cur = nxt[cur];
+    }
 '''
