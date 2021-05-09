@@ -73,3 +73,28 @@ public:
     }
 };
 '''
+
+'''py3
+class Solution:
+    def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
+        if m * k > len(bloomDay): return -1
+        l, r = 1, max(bloomDay)
+        
+        while l < r:
+            #mid = l + r >> 1
+            mid = l + (r - l) // 2
+            flower = 0
+            A = 0
+            for days in bloomDay:
+                if days <= mid:
+                    flower += 1
+                else:
+                    A += flower // k
+                    flower = 0
+            A += flower // k            #注意这句不能漏了
+            if A >= m:
+                r = mid
+            else:
+                l = mid + 1
+        return l
+'''
