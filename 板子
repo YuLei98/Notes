@@ -58,8 +58,8 @@ namespace luoyu {
 #define LB lower_bound
 #define UB upper_bound
 #define CE cout << endl
-#define FOR(i,a,b) for(int i=(a),_i=(b);i<_i;++i)
-#define EOR(j,a,b) for(int j=(a),_j=(b);j>_j;--j)
+#define FOR(i,a,b) for(int i=(a),_i=(b);i<=_i;++i)
+#define EOR(j,a,b) for(int j=(a),_j=(b);j>=_j;--j)
 #define ALL(x) x.begin(), x.end()
 #define SZ(a) ((int)a.size())
 
