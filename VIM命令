@@ -1,0 +1,32 @@
+插入模式下
+Ctrl + h 删除上一字符
+Ctrl + w 删除上一个单词
+Ctrl + u 删除当前行
+Ctrl + c/[ 代替Esc
+
+正常模式下
+Ctrl + f 向上翻一整页  forward
+Ctrl + b 向下翻一整页  backward
+Ctrl + u 向上翻半页    up
+Ctrl + d 向下翻半页    down
+Ctrl + e 向下滚一行    
+Ctrl + y 向上滚一行
+zz 让光标所在行居屏幕中央
+zt 让光标所在行居屏幕最上一行
+zb 让光标所在行居屏幕最下一行
+gi 快速移动到上次编辑位置并进入插入模式
+
+w/W 移动到下一个word/WORD开头
+e/E 移动到下一个word/WORD结尾
+b/B 回到上一个word/WORD开头
+word 指以非空白符分割的单词
+WORD 指以空白符分割的单词
+/  前向搜索
+?  后向搜索
+f{char} 移动到char字符上
+t{char} 移动到char前个字符上  ; 继续搜索下一个 , 继续搜索上一个
+F 表示反向搜索
+
+^ 移动到行首第一个非空白字符
+H/M/L 跳转到屏幕开头，中间，结尾
+ct{char} 删除当前字符到字符char(不包括char)字符
