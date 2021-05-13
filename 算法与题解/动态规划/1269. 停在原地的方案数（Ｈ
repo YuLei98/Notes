@@ -27,6 +27,13 @@
 1 <= steps <= 500
 1 <= arrLen <= 10^6
 
+
+/*
+    思路：动态规划，和P1057思路类似
+    
+    f[i][j]表示经过j步后，指针停在i处的方案数。arrLen的范围很大，steps范围较小，dp数组不必开arrLen那么大（会超时），只需开min(arrLen, steps) 就行，因为经过steps步后，指针只可能到steps，也
+    可以再开小一点，取min(arrLen, steps/2)，因为超过指针走到超过steps/2的地方，经过stps步之后就不可能回到0了。
+*/
 class Solution {
 public:
     int numWays(int steps, int arrLen) {
