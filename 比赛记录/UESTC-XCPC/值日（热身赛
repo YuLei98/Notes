@@ -1,0 +1,71 @@
+题目描述
+Kanade 的班上有 个人，分别编号为1 到n 。其中 Kanade 的编号为1 。
+班上有个值日表 。第一天由 Kanade 值日，第二天由编号为2 的同学值日。接下来的每一天，如果
+今天是i 值日，昨天是j 值日，那么明天就是aij 值日。值日表是已经规划好的，保证今天值日的同学
+明天一定不值日。
+Kanade 想知道，第m 天值日的同学的编号。
+输入
+第一行两个整数 ，表示班上有n 个同学和 Kanade 想知道的天数。
+接下来n行，每行n 个整数，表示值日表 。保证有且仅有对角线上的数字是0 。
+输出
+输出一行一个整数，表示第m 天值日的同学的编号。
+样例
+样例输入
+3 7
+0 3 2
+3 0 3
+2 1 0
+样例输出
+1
+
+'''cpp
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+int mp[505][505], use[505][505];
+long long m;
+
+int main()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) {
+        cin >> mp[i][j];
+    }
+
+    memset(use, 0, sizeof(use));
+    vector<int> res;
+
+    res.emplace_back(1);
+    res.emplace_back(2);
+
+    int now = 2, last = 1;
+    use[now][last] = 2;
+
+    int start = 0, end = 0;
+
+    for (int i = 3; i <= 1000000; i++) {
+        int t = mp[now][last];
+        res.emplace_back(t);
+        last = now;
+        now = t;
+        if (use[now][last]) {
+            start = use[now][last];
+            end = i;
+            break;
+        }
+        use[now][last] = i;
+    }
+
+    int len = end - start;
+
+    if (m < end) cout << res[m - 1] << endl;
+    else {
+        m = (m - start + 1) % len;
+        if (m == 0) {
+            cout << res[end - 2] << endl;
+        }
+        else cout << res[start + m - 2] << endl;
+    }
+}
+
+'''
