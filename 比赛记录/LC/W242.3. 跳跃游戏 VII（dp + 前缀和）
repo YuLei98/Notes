@@ -1,0 +1,96 @@
+给你一个下标从 0 开始的二进制字符串 s 和两个整数 minJump 和 maxJump 。一开始，你在下标 0 处，且该位置的值一定为 '0' 。当同时满足如下条件时，你可以从下标 i 移动到下标 j 处：
+
+i + minJump <= j <= min(i + maxJump, s.length - 1) 且
+s[j] == '0'.
+如果你可以到达 s 的下标 s.length - 1 处，请你返回 true ，否则返回 false 。
+
+ 
+
+示例 1：
+
+输入：s = "011010", minJump = 2, maxJump = 3
+输出：true
+解释：
+第一步，从下标 0 移动到下标 3 。
+第二步，从下标 3 移动到下标 5 。
+示例 2：
+
+输入：s = "01101110", minJump = 2, maxJump = 3
+输出：false
+ 
+
+提示：
+
+2 <= s.length <= 105
+s[i] 要么是 '0' ，要么是 '1'
+s[0] == '0'
+1 <= minJump <= maxJump < s.length
+
+'''cpp   //B.M   BFS
+class Solution {
+public:
+    bool canReach(string s, int minJump, int maxJump) {
+        const int n = s.length();
+        if (s[n - 1] == '1') return false;
+        bool ok = false;
+        for (int l = (n - 1 - maxJump >= 0 ? n - 1 - maxJump : 0), r = (n - 1 - minJump >= 0 ? n - 1 - minJump : 0); l <= r; l++){
+            if (s[l] == '0'){                             //如果[l, r]区间全为'1'，则不可达
+                ok = true;
+                break;
+            }
+        }
+        if (!ok) return false;
+        vector<bool> vi(n);
+        set<int> st;
+        for (int i = 0; i < n; ++i) {
+            vi[i] = s[i] == '1';                          
+            if(s[i] == '0') 
+                st.insert(i);
+        }
+        priority_queue<int> que;
+        que.push(0);
+        while(!que.empty()){
+            int t = que.top();
+            cout << t << " ";
+            int top = t;
+            que.pop();
+            t += minJump;
+            for (auto x = st.lower_bound(t); x != st.end() && *x <= top + maxJump; x = st.upper_bound(*x)){
+                if (*x == n - 1) return true;
+                else{
+                    if (!vi[*x]){
+                        que.push(*x);
+                        vi[*x] = true;
+                    }
+                }
+            }  
+        }          
+        return false; 
+    }
+};
+'''
+
+
+'''cpp    //B.O   dp前缀和
+
+/*
+    判定s[i]是否可达，只要判定[i-maxJump,i-minJump]内部的点是否可以即可（注意与0的大小比较）。
+*/
+class Solution {
+public:
+    bool canReach(string s, int minJump, int maxJump) {
+        int i, j, n = s.size(), last = 0;
+        vector<int> h(n, 0);
+        vector<int> sum(n+1, 0);
+        h[0] = 1;sum[1] = 1;
+        for(i = 1; i < n; i++){
+            if(s[i] == '0') {
+                int l = max(0, i - maxJump), r = i - minJump;
+                if(r >= 0 && l <= r && sum[r+1] - sum[l] > 0) h[i] = 1;
+            }
+            sum[i+1]=sum[i]+h[i];
+        }
+        return h[n-1];
+    }
+};
+'''
