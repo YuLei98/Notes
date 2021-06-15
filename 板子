@@ -82,9 +82,10 @@ namespace luoyu {
     //fill(x.begin(),x.end(),val); val,val,val....
     //accumulate(x.begin(), x.end(), start_val);
     //next_permutation(x.begin(), x.end());
-    //prev(iterator[,n])将迭代器往后移n个单位，第二个为默认参数=1，返回一个迭代器所在新位置，同理有next(it [,n])
-    //nth_element(first，kth，end)  把第k个元素放在正确的位置上，前面的数比它小，后面的数比它大
-    
+    //prev(iterator[,n]);将迭代器往后移n个单位，第二个为默认参数=1，返回一个迭代器所在新位置，同理有next(it [,n])
+    //nth_element(first，kth，end);  把第k个元素放在正确的位置上，前面的数比它小，后面的数比它大
+    //void itoa(int val, char *buffer, int radix);    把整数转为radix进制字符串
+    //int atoi(char *buffer);  把字符串转为整数
     template<class T>
     void PRINT(T x) {
         for (auto p = x.begin(); p != x.end(); p++)
