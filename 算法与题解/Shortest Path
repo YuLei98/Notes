@@ -52,6 +52,7 @@ public:
         for (int i = 0; i < n; ++i){
             vector<int> dist(n, INF);
             dijkstra(dist, adj, i);
+            res.emplace_back(dist);
         }
     }
 }
