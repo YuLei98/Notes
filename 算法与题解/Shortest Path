@@ -33,7 +33,7 @@ public:
         while (!pq.empty()){
             auto [d, u] = pq.top();
             pq.pop();
-            if (dist[u] < d) continue;
+            if (dist[u] < d) continue;     //if (dist[u] != d) continue;
             for (auto &[v, w] : adj[u]){
                 if (d + w < dist[v]){
                     pq.emplace(dist[v] = d + w, u);
