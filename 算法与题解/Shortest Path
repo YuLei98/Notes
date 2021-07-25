@@ -77,3 +77,58 @@ public:
         return res;
     }
 };
+
+class SPFA {
+    static constexpr int MAXN = 1100, MAXM = MAXN*(MAXN-1)/2;
+public:
+    struct Edge{                           //lianshi qianxiangxing
+        int from;
+        int to;
+        int weight;
+        int next;
+    }e[MAXM];
+    int head[MAXN];
+    int t;
+    void add(int u, int v, int w) {
+        e[t].from = u;
+        e[t].to = v;
+        e[t].weight = w;
+        e[t].next = head[u];
+        head[u] = t++;
+    }
+    void spfa(vector<int>& distances, vector<bool>& visited, int start) {
+        queue<int> q;
+        q.push(start);
+        distances[start] = 0;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            visited[u] = false;
+            for (int i = head[u]; i != -1; i = e[i].next) {
+                int v = e[i].to;
+                if (distances[v] > distances[u] + e[i].weight) {
+                    distances[v] = distances[u] + e[i].weight;
+                    if (!visited[v]) {
+                        visited[v] = true;
+                        q.push(v);
+                    }
+                }
+            }
+        }
+    }
+    vector<vector<int>> func(int n, vector<vector<int>>& edges) {
+        t = 0;
+        memset(head, -1, sizeof(head));
+        vector<vector<int>> res;
+        for (vector<int> e: edges) { //添加所有无向边
+            add(e[0], e[1], e[2]);
+            add(e[1], e[0], e[2]);
+        }
+        for (int i = 0; i < n; ++i) {
+            vector<int> distances(n, INT_MAX); //单源最短路径数组
+            vector<bool> visited(n, false);
+            spfa(distances, visited, i);
+        }
+        return res;
+    }
+};
