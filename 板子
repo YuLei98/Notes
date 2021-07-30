@@ -111,6 +111,13 @@ namespace luoyu {
 }//namespace luoyu
 
 using namespace luoyu;
-//int main() {
-//     quick_read();
-//}
+void ac();
+int main() {
+    quick_read();
+
+    ac();
+}
+
+void ac(){
+    int n;
+}
