@@ -1,0 +1,139 @@
+题目描述 
+    有 n 个小朋友排成一排，每 i 个小朋友的位置是t[i]t[i]，身高是h[i]h[i]，视力为d[i]d[i]。
+    小朋友 i 能看到小朋友 j，需要满足2个条件
+        1. 小朋友 j 在小朋友 i 的视力范围内，用数学公式描述就是t[i]-d[i]<=t[j]<=t[i]+d[i]t[i]−d[i]<=t[j]<=t[i]+d[i]
+        2. 这两个小朋友之间不存在高度不低于h[j]的小朋友
+    保证小朋友的位置各不相同
+
+问题
+    对于每一个小朋友，他能看到的小朋友个数是多少个？（不包括自己）
+
+输入描述:
+第一行一个整数 n。
+接下来 n 行每行三个整数 ti, hi, di。
+
+输出描述:
+输出一行 n 个整数，表示每一个小朋友看的小朋友个数
+
+示例1
+输入
+3
+1 2 3
+4 5 6
+7 8 9
+输出
+1 2 1
+说明
+1号小朋友只能看到2号小朋友，2号小朋友可以看到1和3号小朋友，3号小朋友可以看到2号小朋友。
+
+示例2
+
+输入
+5
+1 7 3
+2 6 4
+3 3 3
+4 5 4
+5 8 3
+
+输出
+1 4 4 4 2
+说明
+1号小朋友可以看到2号。2号小朋友可以看到1、3、4、5号。3号小朋友可以看到1、2、4、5号。4号小朋友可以看到1、2、3、5号。5号小朋友可以看到2、4号。
+备注:
+1≤n≤300000,1≤ti,hi,di≤1e9
+
+//乍一看和力扣  1944. 队列中可以看到的人数  有点像，注意和这题的区别。
+/*
+    力扣那题：i能看到j，他们之间的每个人都要比他们两个人矮。而这题只需满足比j矮就行。比如vec{3,4,5},力扣那题v[0]只能看到v[1]，而这题v[0]能看到它右侧的两个人。
+*/
+//由LC1944 而来的错解
+/*
+using namespace luoyu;
+void ac();
+int main() {
+    quick_read();
+
+    ac();
+}
+
+void ac(){
+    int n;
+    int tt, hh, dd;
+    cin >> n;
+    VVI q(n, VI(3));
+    FOR(i, 0, n){
+        cin >> q[i][0] >> q[i][1] >> q[i][2];
+    }
+
+    sort(ALL(q), [](VI& a, VI& b){
+        return a[0] < b[0];
+    });
+    
+    //PRINT_2(q);
+    stack<int> sl, sr;
+    VI l(n), r(n);
+    FOR (i, 0, SZ(q)){
+        while (!sl.empty() && q[i][1] >= q[sl.top()][1]){
+            int top = sl.top(); sl.pop();
+            l[i] += abs(q[top][0] - q[i][0]) <= q[i][2];
+        }
+        l[i] += !sl.empty() && abs(q[sl.top()][0] - q[i][0]) <= q[i][2];
+        sl.push(i);
+        while (!sr.empty() && q[n - i - 1][1] >= q[sr.top()][1]){
+            int top = sr.top(); sr.pop();
+            r[n - i - 1] += abs(q[top][0] - q[n - i - 1][0]) <= q[n - i - 1][2];
+        }
+        r[n - i - 1] += !sr.empty() && abs(q[sr.top()][0] - q[n - i - 1][0]) <= q[n - i - 1][2];
+        sr.push(n - i - 1);
+    }
+    PRINT(l);PRINT(r);
+    FOR (i, 0, n) cout << l[i] + r[i] << " ";
+}
+*/
+
+
+//正解： 前一个题解中栈里面的所有满足视力条件的元素都是解，不只是栈顶的元素是解。
+/*
+using namespace luoyu;
+void ac();
+int main() {
+    quick_read();
+
+    ac();
+}
+
+void ac(){
+    int n;
+    int tt, hh, dd;
+    cin >> n;
+    VVI q(n, VI(4));
+    FOR(i, 0, n){
+        cin >> q[i][0] >> q[i][1] >> q[i][2];
+        q[i][3] = i;
+    }
+
+    sort(ALL(q), [](VI& a, VI& b){
+        return a[0] < b[0];
+    });
+    
+    //PRINT_2(q);
+    //stack<int> sl, sr;
+    vector<int> sl, sr;
+    VI l(n), r(n);
+    FOR (i, 0, SZ(q)){
+        int topl = sl.size();
+        while (topl > 0 && abs(q[sl[topl - 1]][0] - q[i][0]) <= q[i][2]) l[q[i][3]]++, topl--;
+        while (!sl.empty() && q[i][1] >= q[sl.back()][1]) sl.pop_back();
+        sl.push_back(i);
+
+        int topr = sr.size();
+        while (topr > 0 && abs(q[sr[topr - 1]][0] - q[n - i - 1][0]) <= q[n - i - 1][2]) r[q[n - i - 1][3]]++, topr--;
+        while (!sr.empty() && q[n - i - 1][1] >= q[sr.back()][1]) sr.pop_back();
+        sr.push_back(n - i - 1);
+
+    }
+    //PRINT(l);PRINT(r);
+    FOR (i, 0, n) cout << l[i] + r[i] << " ";
+}
+*/
