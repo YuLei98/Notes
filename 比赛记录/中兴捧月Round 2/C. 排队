@@ -119,7 +119,7 @@ void ac(){
     
     //PRINT_2(q);
     //stack<int> sl, sr;
-    vector<int> sl, sr;
+    VI sl, sr;
     VI l(n), r(n);
     FOR (i, 0, SZ(q)){
         int topl = sl.size();
