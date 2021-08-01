@@ -64,7 +64,7 @@ namespace luoyu {
 #define EEOR(j,a,b) for(int j=(a),_II=(b);j>=_II;--j)
 #define ALL(x) x.begin(), x.end()
 #define SZ(a) ((int)a.size())
-
+#define PQ priority_queue
     typedef vector<int> VI;
     typedef vector<vector<int>> VVI;
     typedef pair<int, int> pii;
