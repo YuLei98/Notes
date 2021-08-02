@@ -36,7 +36,7 @@ public:
             if (dist[u] < d) continue;     //if (dist[u] != d) continue;
             for (auto &[v, w] : adj[u]){
                 if (d + w < dist[v]){
-                    pq.emplace(dist[v] = d + w, u);
+                    pq.emplace(dist[v] = d + w, v);
                 }
             }
         }
