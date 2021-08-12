@@ -1,0 +1,63 @@
+给你一个数组boxes和一个整数target。第i个盒子中有boxes[i]根钢笔。如果sum(boxes[i] + boxes[i+1] + ... + boxes[j]) == target，那么区间[i,j]被成为有效区间。请你找出两个不重叠的
+有效区间，并且使这两个区间长度之和最小，将最小长度返回。如果没有这样的两个有效区间，返回-1。
+
+boxes的长度<= 10 ^ 6且boxes[i] > 0
+
+样例 1
+输入:
+boxes = [1,2,2,1,1,1],
+target = 3
+输出: 
+4
+
+class Solution {
+public:
+    /**
+     * @param boxes: number of pens for each box
+     * @param target: the target number
+     * @return: the minimum boxes
+     */
+    int minimumBoxes(vector<int> &boxes, int target) {
+        // write your code here
+        const int n = boxes.size();
+        vector<int> preSum(n + 1);
+        for (int i = 1; i <= n; ++ i)
+            preSum[i] = preSum[i - 1] + boxes[i - 1];
+        
+        vector<int> left(n + 1, 0x3f3f3f3f);               //left[i] 表示以i为右端点的和为target的区间的最小长度，如果没有和为target的区间，则left[i] = INF
+        for (int l = 0, r = 1; r <= n; ++ r){
+            while (l < r && preSum[r] - preSum[l] > target)
+                ++ l;
+            if (preSum[r] - preSum[l] == target)
+                left[r] = r - l;
+            left[r] = min(left[r - 1], left[r]);
+        }
+        int res = 0x3f3f3f3f;
+        vector<int> right(n + 1, 0x3f3f3f3f);          //right[i] 表示以i + 1为左端点的和为target的区间的最小长度，如果没有和为target的区间，则right[i] = INF
+                                                        //注意： 是i + 1  !!!!
+        for (int l = n - 1, r = n; l > 0; -- l){
+            while (l < r && preSum[r] - preSum[l] > target)
+                -- r;
+            if (preSum[r] - preSum[l] == target){
+                right[l] = r - l;
+                res = min(res, left[l] + right[l]);
+            }
+            right[l] = min(right[l + 1], right[l]);
+            //思考：为什么逆序枚举完右边那段区间的左端点之后可得到正确答案？？？？？
+        }
+
+
+        for (int i = 1; i <= n; ++i) printf("%12d ", left[i]); printf("\n");
+        for (int i = 1; i <= n; ++i) printf("%12d ", right[i]);
+        /*  boxes = {7, 4, 5, 8, 5}, target = 13
+             left = {INF, INF, INF,  INF,   2,   2}
+            right = {2,   2,    2,    2, INF, INF}
+        */
+
+        /*  boxes =      {  1,   2,   2,   1,    1,   1}, target = 4
+             left = {INF, INF, INF,   2,    2,   2,   2}
+            right = {  2,   2,   3, INF,  INF, INF, INF}
+        */
+        return res > n ? -1 : res;
+    }
+};
