@@ -119,5 +119,5 @@ int main() {
 }
 
 void ac(){
-    int n;
+    int n; cin >> n;
 }
