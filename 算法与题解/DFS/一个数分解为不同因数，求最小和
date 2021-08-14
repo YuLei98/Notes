@@ -1,0 +1,54 @@
+链接：https://ac.nowcoder.com/acm/contest/7009/D
+来源：牛客网
+
+定义一个函数 f(n) 为将 n 进行严格的因数分解(因数不重复，且分解的因数个数要大于1)后，使得所分解的因数之和
+最小的值，现在给出一个正整数 n，算出 f(n)。
+
+输入描述:
+输入一个整数n，2 <= n <= 106。
+输出描述:
+输出一个整数，表示 f(n) 的值。
+
+示例1
+输入
+18
+输出
+9
+说明
+18可以分解成 1 * 18，2 * 9，3 * 6，显然 3 + 6 = 9是最优的(18 = 2 * 3 * 3 由于有重复值所以无法得到)。
+
+示例2
+输入
+3
+输出
+4
+说明
+3可以分解成1 * 3(因数个数必须大于1)，所以答案为4。
+
+
+void ac();
+int main() {
+    quick_read();
+
+    ac();
+}
+int res;
+bool st[(int)1e6 + 5];
+void dfs(int n, int sum){
+    if (!st[n] && sum){
+        res = min(res, sum + n);
+    }
+    for (int i = 2; i * i < n; ++ i){
+        if (n % i == 0 && !st[i]){
+            st[i] = true;
+            dfs(n / i, sum + i);
+            st[i] = false;
+        }
+    }
+}
+void ac(){
+    int n; cin >> n;
+    res = 1 + n;
+	dfs(n, 0);
+    cout << res << endl;
+}
