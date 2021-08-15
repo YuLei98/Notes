@@ -1,0 +1,146 @@
+给你一个正整数 p 。你有一个下标从 1 开始的数组 nums ，这个数组包含范围 [1, 2p - 1] 内所有整数的二进制形式（两端都 包含）。你可以进行以下操作 任意 次：
+
+从 nums 中选择两个元素 x 和 y  。
+选择 x 中的一位与 y 对应位置的位交换。对应位置指的是两个整数 相同位置 的二进制位。
+比方说，如果 x = 1101 且 y = 0011 ，交换右边数起第 2 位后，我们得到 x = 1111 和 y = 0001 。
+
+请你算出进行以上操作 任意次 以后，nums 能得到的 最小非零 乘积。将乘积对 1e9 + 7 取余 后返回。
+
+注意：答案应为取余 之前 的最小值。
+
+ 
+
+示例 1：
+输入：p = 1
+输出：1
+解释：nums = [1] 。
+只有一个元素，所以乘积为该元素。
+
+示例 2：
+输入：p = 2
+输出：6
+解释：nums = [01, 10, 11] 。
+所有交换要么使乘积变为 0 ，要么乘积与初始乘积相同。
+所以，数组乘积 1 * 2 * 3 = 6 已经是最小值。
+
+示例 3：
+输入：p = 3
+输出：1512
+解释：nums = [001, 010, 011, 100, 101, 110, 111]
+- 第一次操作中，我们交换第二个和第五个元素最左边的数位。
+    - 结果数组为 [001, 110, 011, 100, 001, 110, 111] 。
+- 第二次操作中，我们交换第三个和第四个元素中间的数位。
+    - 结果数组为 [001, 110, 001, 110, 001, 110, 111] 。
+数组乘积 1 * 6 * 1 * 6 * 1 * 6 * 7 = 1512 是最小乘积。
+ 
+
+提示：
+1 <= p <= 60
+
+
+思路：对于任意p，每一个二进制位0和1的和各占一半，因此可将所有(除二进制位都位1的(1LL << p ) - 1外)数分成若干1和(1LL << p) - 2相乘，此时乘积最小。
+
+namespace luoyu {
+    using namespace std;
+//#pragma GCC optimize("Ofast")   
+#define PB push_back
+#define EB emplace_back
+#define fi first
+#define se second
+#define MP make_pair
+#define LB lower_bound
+#define UB upper_bound
+#define CE cout << endl
+#define FOR(i,a,b) for(int i=(a),_i=(b);i<_i;++i)
+#define FFOR(i,a,b) for(int i=(a),_ii=(b);i<=_ii;++i)
+#define EOR(j,a,b) for(int j=(a),_I=(b);j>_I;--j)
+#define EEOR(j,a,b) for(int j=(a),_II=(b);j>=_II;--j)
+#define ALL(x) x.begin(), x.end()
+#define SZ(a) ((int)a.size())
+#define PQ priority_queue
+    typedef vector<int> VI;
+    typedef vector<vector<int>> VVI;
+    typedef pair<int, int> pii;
+    typedef long long ll;
+    typedef unsigned long long ull;
+    typedef double db;
+    const double pi = acos(-1.0);
+    const int MOD = (int)1e9 + 7;
+    int dx[4] = { 1, 0, -1, 0 };
+    int dy[4] = { 0, 1, 0, -1 };
+
+    //__gcd(int a, int b);
+    //lower_bound(x.begin(), x.end(), value);
+    //iota(x.begin(),x.end(),val); val,val+1,val+2....
+    //fill(x.begin(),x.end(),val); val,val,val....
+    //accumulate(x.begin(), x.end(), start_val);
+    //next_permutation(x.begin(), x.end());
+    //prev(iterator[,n]);将迭代器往后移n个单位，第二个为默认参数=1，返回一个迭代器所在新位置，同理有next(it [,n])
+    //nth_element(first，kth，end);  把第k个元素放在正确的位置上，前面的数比它小，后面的数比它大
+    //void itoa(int val, char *buffer, int radix);    把整数转为radix进制字符串
+    //int atoi(char *buffer);  把字符串转为整数
+    template<class T>
+    void PRINT(T x) {
+        for (auto p = x.begin(); p != x.end(); p++)
+            cout << *p << " ";
+        cout << endl;
+    }
+#define PRINT_2(x)                            \
+        for (int i = 0, n = x.size(); i < n; i++) \
+        {                                         \
+            PRINT(x[i]);                          \
+        }
+    /*template <typename T> inline void read(T& x)
+    {
+        x = 0; char ch = getchar(); ll f = 1;
+        while (!isdigit(ch)) { if (ch == '-')f = -1; ch = getchar(); }
+        while (isdigit(ch)) { x = (x << 3) + (x << 1) + (ch ^ 48); ch = getchar(); }x *= f;
+    }*/
+    void quick_read(){
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+    }
+}//namespace luoyu
+
+using namespace luoyu;
+class Solution {
+public:
+    long long fastPower(long long base, long long power) {
+        long long result = 1;
+        base %= MOD;
+        while (power > 0) {
+            if (power % 2 == 1) {
+                result = result * base % MOD;
+            }
+            power = power / 2;
+            base = (base * base) % MOD;
+        }
+        return result;
+	}
+
+
+	//比赛时写的，错解。因为a ** n != a ** (n % MOD).
+    // int minNonZeroProduct(int p) {
+    //     ll res = fastPower(2, p) - 1;
+    //     cout << res << " ";
+    //     ll Ma = res - 1;
+    //     res %= MOD;
+    //     cout << res << endl;CE;
+    //     // cout << Ma << " " << res ;
+    //     res *= fastPower(Ma, Ma / 2);
+    //     return res % MOD;
+    // }
+
+
+    int minNonZeroProduct(int p) {
+        ll res = (1LL << p) - 1;
+        ll Ma = res - 1;
+        res %= MOD;
+        res *= fastPower(Ma, (1LL << p - 1) - 1);
+        return res % MOD;
+
+        //return ((1LL << p) - 1) % MOD * fastPower((1LL << p) - 2, (1LL << p - 1) - 1) % MOD;
+    
+    }
+};
