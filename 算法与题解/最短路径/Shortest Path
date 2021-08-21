@@ -25,7 +25,7 @@ public:
 class Dijkstra{
 public:
     const int INF = 0x3f3f3f3f;
-    void dijkstra(vector<int>& dist, vector<vector<pair<int, int>>>& adj, int s){
+    void dijkstra(vector<int>& dist, vector<vector<pair<int, int>>>& adj, int s){          //s为源点
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
         pq.emplace(0, s);
         dist[s] = 0;

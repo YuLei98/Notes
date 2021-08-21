@@ -103,7 +103,7 @@ namespace luoyu {
         while (!isdigit(ch)) { if (ch == '-')f = -1; ch = getchar(); }
         while (isdigit(ch)) { x = (x << 3) + (x << 1) + (ch ^ 48); ch = getchar(); }x *= f;
     }*/
-    ll fast(ll a, ll b, ll mod) {
+    ll fastmi(ll a, ll b, ll mod) {
         a %= mod;
         ll ans = 1;
         while(b) {
