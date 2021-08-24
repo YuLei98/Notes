@@ -1,0 +1,116 @@
+有 n 个城市通过一些航班连接。给你一个数组 flights ，其中 flights[i] = [fromi, toi, pricei] ，表示该航班都从城市 fromi 开始，以价格 pricei 抵达 toi。
+
+现在给定所有的城市和航班，以及出发城市 src 和目的地 dst，你的任务是找到出一条最多经过 k 站中转的路线，使得从 src 到 dst 的 价格最便宜 ，并返回该价格。 如果不存在这样的路线，则输出 -1。
+
+ 
+
+示例 1：
+输入: 
+n = 3, edges = [[0,1,100],[1,2,100],[0,2,500]]
+src = 0, dst = 2, k = 1
+输出: 200
+
+示例 2：
+输入: 
+n = 3, edges = [[0,1,100],[1,2,100],[0,2,500]]
+src = 0, dst = 2, k = 0
+输出: 500
+ 
+提示：
+1 <= n <= 100
+0 <= flights.length <= (n * (n - 1) / 2)
+flights[i].length == 3
+0 <= fromi, toi < n
+fromi != toi
+1 <= pricei <= 104
+航班没有重复，且不存在自环
+0 <= src, dst, k < n
+src != dst
+
+
+
+思路：
+	「限制最多经过不超过 k 个点」等价于「限制最多不超过 k + 1 条边」
+
+
+//DFS， 超时
+class Solution {
+public:
+    int res;
+    void dfs(vector<vector<pair<int, int>>>& adj, int now, int dst, int k, int cost, int c){
+        if (now == dst) {
+            res = min(res, cost);
+            return ;
+        }
+        if (c > k) return;
+        for (auto v: adj[now]){
+            dfs(adj, v.first, dst, k, cost + v.second, c + 1);
+        }
+    }
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pair<int, int>>> adj(n);        
+        for (auto e: flights){
+            int u = e[0], v = e[1], w = e[2];
+            adj[u].emplace_back(v, w);
+            // adj[v].emplace_back(u, w);    单向图
+        }
+        res = INT_MAX;
+        dfs(adj, src, dst, k, 0, 0);
+        return res == INT_MAX ? -1 : res;
+
+    }
+};
+
+
+//Dijkstra，好像不能用，因为这个带限制的最短路的子路径不一定是最最短路径。
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pair<int, int>>> adj(n);        
+        for (auto e: flights){
+            int u = e[0], v = e[1], w = e[2];
+            adj[u].emplace_back(v, w);
+            // adj[v].emplace_back(u, w);             //单向图
+        }
+        
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> pq;
+        pq.push({0, 0, src});
+
+        vector<int> dist(n, 0x3f3f3f3f);
+        dist[src] = 0;
+        while (!pq.empty()){
+            auto [w, c, u] = pq.top(); pq.pop();
+            if (dist[u] != w) continue;
+            for (auto [a, b]: adj[u]){
+                if (w + b < dist[a] && ((a == dst && c <= k) || (a != dst && c < k))){
+                    pq.emplace(dist[a] = w + b, c + 1, a);
+                }
+            }
+        }
+        // for (int x : dist) cout << x << " "; cout << endl;
+        return dist[dst] == 0x3f3f3f3f ? -1 : dist[dst];
+    }
+};
+
+//动态规划，感觉有点像背包问题
+//dp[k][i]表示中转k-1次到达i点的最小花费，即选取k条边终点是i的最小花费
+class Solution {
+public:
+    const int INF = 0x3f3f3f3f;
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<int>> dp(k + 2, vector<int>(n, INF));
+        dp[0][src] = 0;
+        for (int i = 1; i <= k + 1; ++i){
+            for (auto flight: flights){
+                int u = flight[0], v = flight[1], w = flight[2];
+                dp[i][v] = min(dp[i - 1][u] + w, dp[i][v]);
+            }
+        }
+
+        int res = INF;
+        for (int i = 1; i <= k + 1; ++ i){
+            res = min(res, dp[i][dst]);
+        }
+        return res == INF ? -1 : res;
+    }
+};
