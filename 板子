@@ -67,6 +67,8 @@ namespace luoyu {
 #define PQ priority_queue
     typedef vector<int> VI;
     typedef vector<vector<int>> VVI;
+    typedef vector<string> VS;
+    typedef vector<pair<int, int>> VPII;
     typedef pair<int, int> pii;
     typedef long long ll;
     typedef unsigned long long ull;
