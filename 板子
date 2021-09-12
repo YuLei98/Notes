@@ -65,6 +65,7 @@ namespace luoyu {
 #define ALL(x) x.begin(), x.end()
 #define SZ(a) ((int)a.size())
 #define PQ priority_queue
+#define BP(x) (__builtin_popcount(x))
     typedef vector<int> VI;
     typedef vector<vector<int>> VVI;
     typedef vector<string> VS;
