@@ -1,0 +1,87 @@
+给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words，找出所有同时在二维网格和字典中出现的单词。
+单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母在一个单词中不允许被重复使用。
+
+ 
+
+示例 1：
+输入：board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
+输出：["eat","oath"]
+
+示例 2：
+输入：board = [["a","b"],["c","d"]], words = ["abcb"]
+输出：[]
+
+
+提示：
+m == board.length
+n == board[i].length
+1 <= m, n <= 12
+board[i][j] 是一个小写英文字母
+1 <= words.length <= 3 * 104
+1 <= words[i].length <= 10
+words[i] 由小写英文字母组成
+words 中的所有字符串互不相同
+
+/*
+class Solution {
+    int m, n;
+    set<string> res;
+    const int dx[4] = {0, -1, 0, 1}, dy[4] = {1, 0, -1, 0};
+    class Trie{
+    public:
+        vector<Trie*> son;
+        bool isEnd;
+
+        Trie(): isEnd(false), son(26, nullptr){}
+        void insert(string& word){
+            Trie *p = this;
+            for (char c: word){
+                int idx = c - 'a';
+                if (!p->son[idx]) p->son[idx] = new Trie;
+                p = p->son[idx];
+            }
+            p->isEnd = true;
+        }
+    };
+    Trie* t;
+    // void PrintTrie(Trie *t, string word){
+    //     if (!t) return ;
+    //     if (t->isEnd) cout << word << endl;
+    //     for (int i = 0; i < 26; ++ i){
+    //         if (t->son[i]) {
+    //             print(t->son[i], word += (i + 'a'));
+    //             word.pop_back();
+    //         }
+    //     }
+    // }
+    void dfs(vector<vector<char>>& board, int i, int j, Trie* tt, string word){
+        if (!board[i][j] || !tt->son[board[i][j] - 'a']) return;
+        char c = board[i][j];
+        word += c;
+
+        if (tt->son[c - 'a']->isEnd) res.insert(word);
+        board[i][j] = 0;
+        for (int k = 0; k < 4; ++ k){
+            int x = i + dx[k], y = j + dy[k];
+            if (x < 0 || x >= m || y < 0 || y >= n) continue;
+            dfs(board, x, y, tt->son[c - 'a'], word);
+        }
+        board[i][j] = c;
+    }
+public:
+    Solution(): t(new Trie()) {}    
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        m = board.size(), n = board[0].size();
+        for (auto& word: words){
+            t->insert(word);
+        }
+        
+        for (int i = 0; i < m; ++ i){
+            for (int j = 0; j < n; ++ j){
+                dfs(board, i, j, t, "");
+            }
+        }
+        return vector<string>(res.begin(), res.end());
+    }
+};
+*/

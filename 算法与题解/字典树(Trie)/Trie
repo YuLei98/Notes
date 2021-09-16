@@ -1,0 +1,32 @@
+class Trie{
+public:
+	vector<Trie*> son;
+	bool isEnd;
+
+	Trie(): isEnd(false), son(26, nullptr){}
+	void insert(string& word){
+		Trie *p = this;
+		for (char c: word){
+			int idx = c - 'a';
+			if (!p->son[idx]) p->son[idx] = new Trie;
+			p = p->son[idx];
+		}
+		p->isEnd = true;
+	}
+};
+Trie* t;
+
+
+// void PrintTrie(Trie *t, string word){
+//     if (!t) return ;
+//     if (t->isEnd) cout << word << endl;
+//     for (int i = 0; i < 26; ++ i){
+//         if (t->son[i]) {
+//             print(t->son[i], word += (i + 'a'));
+//             word.pop_back();
+//         }
+//     }
+// }
+
+
+//PrintTrie(t, "");
