@@ -33,6 +33,8 @@
 1 <= startTime[i] < endTime
 
 //思路：对结尾时间排序，对于某个任务，二分找到结束时间不早于该任务的开始时间的最后一个任务，进行状态转移
+
+//用一个数组记录所有任务的结束时间从小到大排序
 /*
 class Solution {
 public:
@@ -70,6 +72,46 @@ public:
         }
 
 
+        return f[n - 1];
+    }
+};
+*/
+
+//结构体
+/*
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        struct job{
+            int s, e, p;
+            job(int s, int e, int p): s(s), e(e), p(p){}
+            bool operator < (const job& that){
+                return e < that.e;
+            }
+        };
+        const int n = profit.size();
+        vector<job> jobs;
+        for (int i = 0; i < n; ++ i){
+            jobs.emplace_back(startTime[i], endTime[i], profit[i]);
+        }
+
+        sort(jobs.begin(), jobs.end());
+        vector<int> f(n);
+        f[0] = jobs[0].p;
+        for (int i = 1; i < n; ++ i){
+            int l = 0, r = i - 1;
+            int last = -1;
+            while (l <= r){
+                int m = (l + r) / 2;
+                if (jobs[m].e > jobs[i].s)
+                    r = m - 1;
+                else{
+                    last = m;
+                    l = m + 1;
+                }
+            }
+            f[i] = max(f[i - 1], jobs[i].p + (last == -1 ? 0 : f[last]));
+        }
         return f[n - 1];
     }
 };
