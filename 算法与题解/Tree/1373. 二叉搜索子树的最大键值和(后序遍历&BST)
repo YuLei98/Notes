@@ -1,0 +1,60 @@
+给你一棵以 root 为根的 二叉树 ，请你返回 任意 二叉搜索子树的最大键值和。
+二叉搜索树的定义如下：
+
+任意节点的左子树中的键值都 小于 此节点的键值。
+任意节点的右子树中的键值都 大于 此节点的键值。
+任意节点的左子树和右子树都是二叉搜索树。
+ 
+示例 1：
+输入：root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
+输出：20
+解释：键值为 3 的子树是和最大的二叉搜索树。
+
+示例 2：
+输入：root = [4,3,null,1,2]
+输出：2
+解释：键值为 2 的单节点子树是和最大的二叉搜索树。
+
+示例 3：
+输入：root = [-4,-2,-5]
+输出：0
+解释：所有节点键值都为负数，和最大的二叉搜索树为空。
+
+示例 4：
+输入：root = [2,1,3]
+输出：6
+
+示例 5：
+输入：root = [5,4,8,3,null,6,3]
+输出：7
+ 
+提示：
+每棵树有 1 到 40000 个节点。
+每个节点的键值在 [-4 * 10^4 , 4 * 10^4] 之间。
+
+
+//思路：如果当前节点要做的事情需要通过左右子树的计算结果推导出来，就用后序遍历
+/*
+class Solution {
+    int ans = 0;
+public:
+    int maxSumBST(TreeNode* root) {
+        work(root);
+        return ans;
+    }
+    //{sum, isBST, maxx, minn}  sum记录以root为根节点的子树的键值和，minn为最小键值，maxx为最大键值，isBST为是否是二叉搜索树
+    vector<int> work(TreeNode* root){
+        if (!root) return {0, 1, INT_MIN, INT_MAX};
+        vector<int> l = work(root->left);
+        vector<int> r = work(root->right);
+        int maxx = max({root->val, l[2], r[2]});
+        int minn = min({root->val, l[3], r[3]});
+        int sum = l[0] + r[0] + root->val;
+        if (l[1] && r[1] && l[2] < root->val && root->val < r[3]){
+            ans = max({ans, l[0], r[0], sum});
+            return {sum, 1, maxx, minn};
+        }
+        return {sum, 0, maxx, minn};
+    }
+};
+*/
