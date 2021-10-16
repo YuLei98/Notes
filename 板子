@@ -130,14 +130,13 @@ int main() {
     cout.tie(nullptr);
 
     #ifdef DEBUG
-        fstream f("./in");           //输入样例所在文件路径
-        #define cin f
+        FILE *fp = freopen("./in", "r", stdin);       //测试用例所在路径
     #endif
 
     ac();
 
     #ifdef DEBUG
-        f.close();
+        fclose(fp);
     #endif
 }
 
