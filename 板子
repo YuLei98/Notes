@@ -121,13 +121,7 @@ namespace luoyu {
     }
 
 }//namespace luoyu
-
 using namespace luoyu;
-
-#ifdef DEBUG
-fstream f("./in");
-#define cin f
-#endif
 
 void ac();
 int main() {
