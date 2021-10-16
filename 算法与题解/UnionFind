@@ -6,12 +6,15 @@ public:
     UF(int _n): f(_n), num(_n){
         iota(f.begin(), f.end(), 0);    //从start开始
     }
-    int father(int x){
-        while (x != f[x]) x = f[x];
-        return x;
+    int find(int x){
+        if (x == f[x]) return x;
+        else{
+            f[x] = find(f[x]);
+            return f[x];
+        }
     }
     bool merge(int x, int y){
-        int fx = father(x), fy = father(y);
+        int fx = find(x), fy = find(y);
         if (fx != fy){
             f[fx] = fy;
             num --;
