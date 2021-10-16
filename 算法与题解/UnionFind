@@ -1,0 +1,19 @@
+class UF{
+    vector<int> f;   //father
+public:
+    int num;      //连通分量的数目
+    UF(int _n, int start = 0): f(_n), num(_n){
+        iota(f.begin(), f.end(), start);    //从start开始
+    }
+    int father(int x){
+        while (x != f[x]) x = f[x];
+        return x;
+    }
+    void merge(int x, int y){
+        int fx = father(x), fy = father(y);
+        if (fx != fy){
+            f[fx] = fy;
+            num --;
+        }
+    }
+};
