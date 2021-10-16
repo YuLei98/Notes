@@ -1,21 +1,24 @@
 //#define LOCAL
+//#define DEBUG
+
 #ifndef LOCAL
 #include<bits/stdc++.h>
 #else
-#include<iostream>
-#include<vector>
-#include<queue>
-#include<stack>
-#include<string>
-#include<map>
-#include<set>
-#include<utility>
-#include<algorithm>
-#include<numeric>
-#include<climits>
-#include<bitset>
-#include<functional>
-#include<cmath>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <string>
+#include <map>
+#include <set>
+#include <utility>
+#include <algorithm>
+#include <numeric>
+#include <climits>
+#include <bitset>
+#include <functional>
+#include <cmath>
 #endif // LOCAL
 
 #ifdef _MSC_VER
@@ -120,13 +123,28 @@ namespace luoyu {
 }//namespace luoyu
 
 using namespace luoyu;
+
+#ifdef DEBUG
+fstream f("./in");
+#define cin f
+#endif
+
 void ac();
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
+    #ifdef DEBUG
+        fstream f("./in");           //输入样例所在文件路径
+        #define cin f
+    #endif
+
     ac();
+
+    #ifdef DEBUG
+        f.close();
+    #endif
 }
 
 void ac(){
