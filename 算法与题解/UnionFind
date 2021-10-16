@@ -2,18 +2,21 @@ class UF{
     vector<int> f;   //father
 public:
     int num;      //连通分量的数目
-    UF(int _n, int start = 0): f(_n), num(_n){
-        iota(f.begin(), f.end(), start);    //从start开始
+    /*如果从0开始，f[0]未使用，num会比目标值多一*/
+    UF(int _n): f(_n), num(_n){
+        iota(f.begin(), f.end(), 0);    //从start开始
     }
     int father(int x){
         while (x != f[x]) x = f[x];
         return x;
     }
-    void merge(int x, int y){
+    bool merge(int x, int y){
         int fx = father(x), fy = father(y);
         if (fx != fy){
             f[fx] = fy;
             num --;
+            return true;
         }
+        return false;
     }
 };
