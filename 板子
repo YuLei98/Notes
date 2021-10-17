@@ -72,6 +72,7 @@ namespace luoyu {
     typedef vector<int> VI;
     typedef vector<vector<int>> VVI;
     typedef vector<string> VS;
+    typedef vector<bool> VB;
     typedef vector<pair<int, int>> VPII;
     typedef pair<int, int> pii;
     typedef long long ll;
