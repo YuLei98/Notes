@@ -62,9 +62,9 @@ namespace luoyu {
 #define UB upper_bound
 #define CE cout << endl
 #define FOR(i,a,b) for(int i=(a),_##i##end=(b);i<_##i##end;++i)
-#define FFOR(i,a,b) for(int i=(a),_##i##end=(b);i<=_##i##end;++i)
+// #define FFOR(i,a,b) for(int i=(a),_##i##end=(b);i<=_##i##end;++i)
 #define EOR(i,a,b) for(int i=(a),_##i##end=(b);i>_##i##end;--i)
-#define EEOR(i,a,b) for(int i=(a),_##i##end=(b);i>=_##i##end;--i)
+// #define EEOR(i,a,b) for(int i=(a),_##i##end=(b);i>=_##i##end;--i)
 #define ALL(x) x.begin(), x.end()
 #define SZ(a) ((int)a.size())
 #define PQ priority_queue
