@@ -79,6 +79,7 @@ namespace luoyu {
     typedef double db;
     const double pi = acos(-1.0);
     const int MOD = 1e9 + 7;
+    const int INF = 0x3f3f3f3f;
     int dx[4] = { 1, 0, -1, 0 };
     int dy[4] = { 0, 1, 0, -1 };
 
