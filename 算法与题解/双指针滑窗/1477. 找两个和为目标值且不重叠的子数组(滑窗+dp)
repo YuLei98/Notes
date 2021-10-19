@@ -1,0 +1,91 @@
+给你一个整数数组 arr 和一个整数值 target 。
+
+请你在 arr 中找 两个互不重叠的子数组 且它们的和都等于 target 。可能会有多种方案，请你返回满足要求的两个子数组长度和的 最小值 。
+
+请返回满足要求的最小长度和，如果无法找到这样的两个子数组，请返回 -1 。
+
+ 
+
+示例 1：
+
+输入：arr = [3,2,2,4,3], target = 3
+输出：2
+解释：只有两个子数组和为 3 （[3] 和 [3]）。它们的长度和为 2 。
+示例 2：
+
+输入：arr = [7,3,4,7], target = 7
+输出：2
+解释：尽管我们有 3 个互不重叠的子数组和为 7 （[7], [3,4] 和 [7]），但我们会选择第一个和第三个子数组，因为它们的长度和 2 是最小值。
+示例 3：
+
+输入：arr = [4,3,2,6,2,3,4], target = 6
+输出：-1
+解释：我们只有一个和为 6 的子数组。
+示例 4：
+
+输入：arr = [5,5,4,4,5], target = 3
+输出：-1
+解释：我们无法找到和为 3 的子数组。
+示例 5：
+
+输入：arr = [3,1,1,1,5,1,2,1], target = 3
+输出：3
+解释：注意子数组 [1,2] 和 [2,1] 不能成为一个方案因为它们重叠了。
+ 
+
+提示：
+
+1 <= arr.length <= 10^5
+1 <= arr[i] <= 1000
+1 <= target <= 10^8
+
+链接：https://leetcode-cn.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum
+
+//动规数组f保存[0, r)内和为target的最小长度
+
+//sol1: 左开右开，与下一个左开右闭相比需要动规数组多了一个元素，省区了特判左边界的步骤
+/*
+class Solution {
+    const int INF = 0x3f3f3f3f;
+public:
+    int minSumOfLengths(vector<int>& arr, int target) {
+        const int n = arr.size();
+        vector<int> f(n + 1, INF);
+        int sum = 0, ans = INF;
+        for (int l = 0, r = 1; r <= n; ++ r){
+            sum += arr[r - 1];
+            while (sum > target) sum -= arr[l ++];
+            f[r] = f[r - 1];
+            if (sum == target){
+                f[r] = min(f[r - 1], r - l);
+                ans = min(ans, f[l] + r - l);
+            }
+        }
+        // for (int i = 0; i <= n; ++ i) cout << f[i] << " "; cout << endl;
+        return ans == INF ? -1 : ans;
+    }
+};
+*/
+
+/*
+class Solution {
+    const int INF = 0x3f3f3f3f;
+public:
+    int minSumOfLengths(vector<int>& arr, int target) {
+        const int n = arr.size();
+        int sum = 0, ans = INF;
+        vector<int> f(n, INF);
+        for (int l = -1, r = 0; r < n; ++ r){
+            sum += arr[r];
+            while (sum > target) sum -= arr[++ l];
+            if (sum == target){
+                f[r] = r ? min(f[r - 1], r - l) : 1;
+                ans = l > -1 ? min(ans, f[l] + r - l) : INF + r - l;
+            }else{
+                f[r] = r ? f[r - 1] : INF;
+            }
+        }
+        return ans >= INF ? -1 : ans;
+    }
+};
+*/
