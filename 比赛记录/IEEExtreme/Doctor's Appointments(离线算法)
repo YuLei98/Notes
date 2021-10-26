@@ -1,0 +1,94 @@
+The global pandemic has caused the Doctor Xtreme's office to become ultra busy. 
+There are NN patients numbered 11 to NN that need to see Doctor Xtreme in the following NN days. 
+On each day Doctor Xtreme will have a single appointment to see one of the NN patients. 
+Each patient ii has provided his/her available time window as two integers Li, Ri, 
+which means that he/she can come to see Doctor Xtreme on any day between the Lith day and the Rith day (inclusive on both ends).
+Can Doctor Xtreme successfully schedule NN appointments to see all the NN patients?
+
+Standard input
+
+The first line of input contains a single integer T, the number of test cases.
+Each test case begins with an integer NN on the first line, the number of patients. 
+The next N lines each have two integers, describing the available time window of one patient. The ith line has Li and Ri.
+
+Standard output
+
+For each test case output a single line.
+If it is possible for Doctor Xtreme to see all the N patients, output N space-separated integers on a single line. The ith of these integers is the patient that Doctor Xtreme will see on the ith day. If there are multiple ways to schedule the N appointments, you may output any of them.
+
+If Doctor Xtreme cannot see all the NN patients, output impossible.
+
+Constraints and notes
+1≤T≤30
+2 <= N <= 10^5
+1 ≤ Li ≤ Ri ≤ N
+For 60% of the test files, N ≤ 10.
+For 80% of the test files, N ≤ 1000.
+
+
+
+Input	                                   Output	    
+3                    
+
+3                                          1 2 3
+1 1                  
+1 2
+2 3
+
+2                                          1 2 
+1 2
+1 2
+
+2                                          impossible
+1 1
+1 1
+
+6                                          2 1 5 3 6 4
+2 2 1  4 1 5 1 6 2 3 3 5
+
+
+//思路：对病人需要就医的时间从小到打排序。用一个优先队列维护某天n可以看的病人。
+/*
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int T; cin >> T;
+    while (T--){
+        int n; cin >> n;
+        vector<vector<int>> v(n, vector<int>(3));
+        for (int i = 0; i < n; ++ i){
+            cin >> v[i][0] >> v[i][1];      //Li, Ri
+            v[i][2] = i + 1;
+        }
+        sort(v.begin(), v.end());
+
+        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
+        vector<int> ans(n);
+        int idx = 0;
+        bool ok = true;
+        for (int i = 0; i < n; ++ i){
+            while (idx < n && v[idx][0] <= i + 1) {
+                pq.push({v[idx][1], v[idx][0], v[idx][2]});
+                idx ++;
+            }
+            while (!pq.empty() && pq.top()[0] < i + 1) pq.pop();
+            if (!pq.empty()){
+                ans[i] = pq.top()[2];
+                pq.pop();
+            }else{
+                ok = false;
+                break;
+            }
+        }
+        if (ok){
+            for (int i = 0; i < n; ++ i){
+                printf("%d%c", ans[i], " \n"[i == n - 1]);
+            }
+        }else{
+            printf("impossible\n");
+        }
+    }
+    return 0;
+}
+*/
