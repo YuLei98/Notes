@@ -62,6 +62,7 @@ xi != yi
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 //思路：可把相同时间的所有专家都抽象成一张无向图中的顶点，再定义一个bool数组表示知晓秘密的专家，如果图中有专家知晓秘密，则加入队列中，用BFS扩散。
+//图BFS
 /*
 class Solution {
 public:
@@ -184,3 +185,76 @@ public:
         return ans;
     }
 };
+
+
+//思路：回滚并查集
+/*
+class Solution {
+public:
+    class DSU{
+        vector<int> fa;
+        vector<int> rank;
+    public:
+        DSU(int n): fa(n), rank(n){
+            for (int i = 0; i < n; ++ i){
+                fa[i] = i;
+                rank[i] = 1;
+            }
+        }
+        int find(int i){
+            return i == fa[i] ? i : fa[i] = find(fa[i]);
+        }
+        void merge(int i, int j){
+            int x = find(i), y = find(j);
+            if (rank[x] <= rank[y]){
+                fa[x] = y;
+            }else{
+                fa[y] = x;
+            }
+            if (rank[x] == rank[y] && x != y){
+                rank[y] ++;
+            }
+        }
+        bool isConnected(int i, int j){
+            return find(i) == find(j);
+        }
+        void rollback(int i){
+            fa[i] = i;
+        }
+    };
+    vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson) {
+        sort(meetings.begin(), meetings.end(), [](const vector<int>& a, const vector<int>& b){
+            return a[2] < b[2];
+        });
+        const int sz = meetings.size();
+        DSU d(n);
+        d.merge(0, firstPerson);
+        queue<int> que;
+        for (int i = 0; i < sz; ++ i){
+            int j = i;
+            while (j + 1 < sz && meetings[j + 1][2] == meetings[i][2]) j++;
+            for (int k = i; k <= j; ++ k){
+                int x = meetings[k][0], y = meetings[k][1];
+                d.merge(x, y);
+                que.push(x);   
+                que.push(y);
+            }
+            while (!que.empty()){                           //把不知道秘密的专家回滚到最初状态
+                int t = que.front();
+                que.pop();
+                if (!d.isConnected(0, t)){
+                    d.rollback(t);
+                }
+            }
+            i = j;
+        }
+        vector<int> ans;
+        for (int i = 0; i < n; ++ i){
+            if (d.isConnected(0, i)){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+};
+*/
