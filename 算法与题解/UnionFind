@@ -9,7 +9,7 @@ public:
     int find(int x){
         if (x == f[x]) return x;
         else{
-            f[x] = find(f[x]);           //路径压缩
+            f[x] = find(f[x]);
             return f[x];
         }
     }
@@ -21,30 +21,5 @@ public:
             return true;
         }
         return false;
-    }
-};
-
-
-
-class UF{
-    vector<int> fa, rank;
-public:
-    UF(int n): fa(n), rank(n) {
-        iota(fa.begin(), fa.end(), 0);
-        fill(rank.begin(), rank.end(), 1);
-    }
-    int find(int i){
-        return i == fa[i] ? i : fa[i] = find(fa[i]);
-    }
-    void merge(int i, int j){
-        int x = find(i), y = find(j);
-        if (rank(x) <= rank(y)){
-            fa[x] = y;
-        }else{
-            fa[y] = x;
-        }
-        if (rank[x] == rank[y] && x != y){
-            rank[y]++;
-        }
     }
 };
