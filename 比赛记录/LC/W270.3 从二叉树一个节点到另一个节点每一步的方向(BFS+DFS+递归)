@@ -1,0 +1,154 @@
+给你一棵 二叉树 的根节点 root ，这棵二叉树总共有 n 个节点。每个节点的值为 1 到 n 中的一个整数，且互不相同。给你一个整数 startValue ，
+表示起点节点 s 的值，和另一个不同的整数 destValue ，表示终点节点 t 的值。
+
+请找到从节点 s 到节点 t 的 最短路径 ，并以字符串的形式返回每一步的方向。每一步用 大写 字母 'L' ，'R' 和 'U' 分别表示一种方向：
+
+'L' 表示从一个节点前往它的 左孩子 节点。
+'R' 表示从一个节点前往它的 右孩子 节点。
+'U' 表示从一个节点前往它的 父 节点。
+请你返回从 s 到 t 最短路径 每一步的方向。
+ 
+示例 1：
+输入：root = [5,1,2,3,null,6,4], startValue = 3, destValue = 6
+输出："UURL"
+解释：最短路径为：3 → 1 → 5 → 2 → 6 。
+
+示例 2：
+输入：root = [2,1], startValue = 2, destValue = 1
+输出："L"
+解释：最短路径为：2 → 1 。
+ 
+
+提示：
+树中节点数目为 n 。
+2 <= n <= 105
+1 <= Node.val <= n
+树中所有节点的值 互不相同 。
+1 <= startValue, destValue <= n
+startValue != destValue
+
+//思路：递归求公共祖先，BFS求s,t和它们的公共祖先的深度，DFS求解结果string(从公共祖先到d的路径)
+/*
+class Solution {
+    // string ans;
+    bool ok = false;                //如果找到目标路径，提前退出
+public:
+    //求二叉树深度除了用BFS，还有没有其他方法
+    TreeNode* getComAncester(TreeNode* root, int s, int d){
+        if (!root || root->val == s || root->val == d) return root;
+        TreeNode* left = getComAncester(root->left, s, d);
+        TreeNode* right = getComAncester(root->right, s, d);
+        if (left && right) return root;
+        else if (left) return left;
+        else if (right) return right;
+        return nullptr;
+    }
+    // void dfs(TreeNode *root, int target, string s){          //形参s不用引用会超时
+    //     if (!root){
+    //         return ;
+    //     }
+    //     if (root->val == target){
+    //         ans = s;
+    //         return;
+    //     }
+    //     dfs(root->left, target, s+'L');
+    //     dfs(root->right, target, s+'R');
+    // }
+    void dfs(TreeNode *root, int target, string &s){
+        if (!root) {
+            return ;
+        }
+        if (root->val == target){
+            ok = true;
+            return;
+        }
+        dfs(root->left, target, s +='L');
+        if (ok) return;
+        s.pop_back();
+        dfs(root->right, target, s += 'R');
+        if (ok) return;
+        s.pop_back();
+    }
+    string getDirections(TreeNode* root, int s, int d) {
+        TreeNode *an = getComAncester(root, s, d);
+        int ds = -1, dd = -1, da = -1;             //s, t, ancester的深度
+        queue<TreeNode *> que;
+        que.push(root);
+        int depth = 0;
+        
+        TreeNode *nodes = nullptr, *noded = nullptr;   //节点s, t
+        while (!que.empty()){
+            ++ depth;
+            for (int i = 0, sz = que.size(); i < sz; ++ i){
+                auto node = que.front();
+                que.pop();
+                if (node->val == s) { ds = depth; nodes = node;}
+                if (node->val == d) { dd = depth; noded = node;}
+                if (node == an) da = depth;
+                if (node->left){
+                    que.push(node->left);
+                }
+                if (node->right){
+                    que.push(node->right);
+                }
+            }
+        }
+        // printf("an: %d, ds: %d, dd: %d, da: %d\n", an->val, ds, dd, da);
+        if (da == dd){
+            return string(ds - dd, 'U');
+        }
+        // cout << an->val << " " << nodes->val << endl;
+        string ans;
+        // dfs(an, d, "");
+        dfs(an, d, ans);
+        return ds == da ? ans : string(ds - da, 'U') + ans;
+        
+    }
+};
+
+*/
+
+
+//先建图再BFS
+/*
+class Solution {
+    map<int, vector<pair<int, char>>> mp;
+    void buildGraph(TreeNode *root){
+        if (!root) return;
+        if (root->left){
+            mp[root->val].emplace_back(root->left->val, 'L');
+            mp[root->left->val].emplace_back(root->val, 'U');
+            buildGraph(root->left);
+        }
+        if (root->right){
+            mp[root->val].emplace_back(root->right->val, 'R');
+            mp[root->right->val].emplace_back(root->val, 'U');
+            buildGraph(root->right);
+        }
+    }
+public:
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        buildGraph(root);
+        vector<bool> vis(mp.size() + 1);
+        queue<pair<int, string>> que;
+        que.push({startValue, ""});
+        vis[startValue] = true;
+        while (!que.empty()){
+            int len = que.size();
+            for (int i = 0; i < len; ++ i){
+                auto node = que.front();
+                que.pop();
+                for (auto &p: mp[node.first]){
+                    if (!vis[p.first]){
+                        if (p.first == destValue)
+                            return node.second + p.second;
+                        que.push({p.first, node.second + p.second});
+                        vis[p.first] = true;
+                    }     
+                }
+            }
+        }
+        return "";
+    }
+};
+*/
