@@ -39,10 +39,10 @@ int dpmax[N][20],dpmin[N][20];
 void RMQ(int num)
 {
 	int i,j;
-	for(j=1;j<20;++j)
-		for(i=1;i<=num;++i)
+	for(j = 1; j < 20; ++ j)
+		for(i = 1; i <= num; ++ i)
 		{
-			if(i+(1<<j)-1<=num)
+			if(i + (1 << j) - 1 <= num)
 			{
 				dpmax[i][j] = max(dpmax[i][j - 1], dpmax[i + (1 << (j - 1))][j - 1]);  
 				dpmin[i][j] = min(dpmin[i][j - 1], dpmin[i + (1 << (j - 1))][j - 1]);  
@@ -51,23 +51,21 @@ void RMQ(int num)
 }
 int main()
 {
-	int n,t;
-	cin>>n>>t;
+	int n, t;
+	cin >> n >> t;
 	int i;
-	for(i=1;i<=n;++i)
-	{
-		cin>>dpmax[i][0];
-		dpmin[i][0]=dpmax[i][0];
+	for(i = 1; i <= n; ++ i){
+		cin >> dpmax[i][0];
+		dpmin[i][0] = dpmax[i][0];
 	}
 	RMQ(n);
-	int a,b,k;
-	while(t--)
-	{
-		cin>>a>>b;
-		k=(int)(log(b-a+1.0)/log(2.0));                          //取k = log2(b-a+1)       //log()函数，以10为底。定义以m为底的函数，log(n)/log(m)
-		int maxans=max(dpmax[a][k],dpmax[b-(1<<k)+1][k]);
-		int minans=min(dpmin[a][k],dpmin[b-(1<<k)+1][k]);
-		cout<<maxans-minans<<endl;
+	int a, b, k;
+	while(t --){
+		cin >> a >> b;
+		k = (int)(log(b - a + 1.0) / log(2.0));                          //取k = log2(b-a+1)       //log()函数，以10为底。定义以m为底的函数，log(n)/log(m)
+		int maxans = max(dpmax[a][k], dpmax[b - (1 << k) + 1][k]);
+		int minans = min(dpmin[a][k], dpmin[b - (1 << k) + 1][k]);
+		cout << maxans - minans << endl;
 	}
 	return 0;
 }
