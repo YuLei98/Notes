@@ -38,7 +38,11 @@ using namespace std;
 int dpmax[N][20], dpmin[N][20];
 void RMQ(int num)
 {
+<<<<<<< HEAD
 	int i, j;
+=======
+	int i,j;
+>>>>>>> b8c40c174af546fc24a402d8903212ab715529da
 	for(j = 1; j < 20; ++ j)
 		for(i = 1; i <= num; ++ i)
 		{
