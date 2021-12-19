@@ -1,0 +1,176 @@
+给你一个下标从 0 开始的二维整数数组 pairs ，其中 pairs[i] = [starti, endi] 。如果 pairs 的一个重新排列，满足对每一个下标 i （ 1 <= i < pairs.length ）都有 endi-1 == starti ，那么我们就认为这个重新排列是 pairs 的一个 合法重新排列 。
+
+请你返回 任意一个 pairs 的合法重新排列。
+
+注意：数据保证至少存在一个 pairs 的合法重新排列。
+
+示例 1：
+输入：pairs = [[5,1],[4,5],[11,9],[9,4]]
+输出：[[11,9],[9,4],[4,5],[5,1]]
+解释：
+输出的是一个合法重新排列，因为每一个 endi-1 都等于 starti 。
+end0 = 9 == 9 = start1 
+end1 = 4 == 4 = start2
+end2 = 5 == 5 = start3
+
+示例 2：
+输入：pairs = [[1,3],[3,2],[2,1]]
+输出：[[1,3],[3,2],[2,1]]
+解释：
+输出的是一个合法重新排列，因为每一个 endi-1 都等于 starti 。
+end0 = 3 == 3 = start1
+end1 = 2 == 2 = start2
+重新排列后的数组 [[2,1],[1,3],[3,2]] 和 [[3,2],[2,1],[1,3]] 都是合法的。
+
+示例 3：
+输入：pairs = [[1,2],[1,3],[2,1]]
+输出：[[1,2],[2,1],[1,3]]
+解释：
+输出的是一个合法重新排列，因为每一个 endi-1 都等于 starti 。
+end0 = 2 == 2 = start1
+end1 = 1 == 1 = start2
+ 
+提示：
+1 <= pairs.length <= 105
+pairs[i].length == 2
+0 <= starti, endi <= 109
+starti != endi
+pairs 中不存在一模一样的数对。
+至少 存在 一个合法的 pairs 重新排列。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/valid-arrangement-of-pairs
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+/*
+无向图G存在欧拉通路的充要条件是：
+
+G为连通图，并且G仅有两个奇度结点（度数为奇数的顶点）或者无奇度结点。
+
+推论1：
+
+1) 当G是仅有两个奇度结点的连通图时，G的欧拉通路必以此两个结点为端点。
+2) 当G是无奇度结点的连通图时，G必有欧拉回路。
+3) G为欧拉图（存在欧拉回路）的充分必要条件是G为无奇度结点的连通图。
+
+ 
+
+有向图D存在欧拉通路的充要条件是：
+
+D为有向图，D的基图连通，并且所有顶点的出度与入度都相等；或者除两个顶点外，其余顶点的出度与入度都相等，而这两个顶点中一个顶点的出度与入度之差为1，另一个顶点的出度与入度之差为-1。
+
+推论2：
+1) 当D除出、入度之差为1，-1的两个顶点之外，其余顶点的出度与入度都相等时，D的有向欧拉通路必以出、入度之差为1的顶点作为始点，以出、入度之差为-1的顶点作为终点。
+2) 当D的所有顶点的出、入度都相等时，D中存在有向欧拉回路。
+3) 有向图D为有向欧拉图的充分必要条件是D的基图为连通图，并且所有顶点的出、入度都相等。
+*/
+
+/*
+class Solution {
+public:
+
+    /* 反例：    输入： [[8,5],[8,7],[0,8],[0,5],[7,0],[5,0],[0,7],[8,0],[7,8]]
+                输出： [[8,0],[0,5],[5,0],[0,7],[7,0],[0,8],[8,5],[8,7],[7,8]]
+                预期： [[8,0],[0,7],[7,8],[8,7],[7,0],[0,5],[5,0],[0,8],[8,5]]
+    */
+    // void dfs(map<int, set<int>>& mp, int now, vector<vector<int>>& ans){
+    //     while(!mp[now].empty()){
+    //         int x = *mp[now].begin();
+    //         ans.push_back({now, x});
+    //         mp[now].erase(mp[now].begin());
+    //         dfs(mp, x, ans);
+    //     }
+    // }
+
+    void dfs(map<int, set<int>>& mp, int now, vector<int>& sort){
+        while (!mp[now].empty()){
+            int x = *mp[now].begin();
+            mp[now].erase(mp[now].begin());
+            dfs(mp, x, sort);
+        }
+        sort.push_back(now);
+    }
+
+    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+        map<int, int> in, out;
+        map<int, set<int>> mp;
+        for (auto &p: pairs){
+            in[p[1]] ++;
+            out[p[0]] ++;
+            mp[p[0]].insert(p[1]);
+        }
+
+        int s = pairs[0][0];
+        for (auto [a, b]: out){
+            if (b - in[a] == 1){
+                s = a;
+                break;
+            }
+        }
+        // vector<vector<int>> ans;
+        // dfs(mp, s, ans);
+        // return ans;
+
+        vector<int> sort;
+        dfs(mp, s, sort);
+        
+        vector<vector<int>> ans;
+        for (int i = sort.size() - 1; i > 0; -- i){
+            ans.push_back({sort[i], sort[i - 1]});
+        }
+        return ans;
+
+    }
+};
+*/
+
+//官方题解
+/*
+class Solution {
+public:
+    vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+        // 存储图
+        unordered_map<int, vector<int>> edges;
+        // 存储入度和出度
+        unordered_map<int, int> indeg, outdeg;
+        for (const auto& p: pairs) {
+            int x = p[0], y = p[1];
+            edges[x].push_back(y);
+            ++indeg[y];
+            ++outdeg[x];
+        }
+        
+        // 寻找起始节点
+        int start = pairs[0][0];
+        for (const auto& [x, occ]: outdeg) {
+            // 如果有节点出度比入度恰好多 1，那么只有它才能是起始节点
+            if (occ == indeg[x] + 1) {
+                start = x;
+                break;
+            }
+        }
+        
+        vector<vector<int>> ans;
+        
+        // 深度优先搜索（Hierholzer 算法）求解欧拉通路
+        function<void(int)> dfs = [&](int u) {
+            while (!edges[u].empty()) {
+                int v = edges[u].back();
+                edges[u].pop_back();
+                dfs(v);
+                ans.push_back({u, v});
+            }
+        };
+        
+        dfs(start);
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/valid-arrangement-of-pairs/solution/he-fa-zhong-xin-pai-lie-shu-dui-by-leetc-h8rl/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+*/
