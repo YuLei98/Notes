@@ -1,0 +1,90 @@
+给你一个 m x n 的二进制矩阵 grid ，每个格子要么为 0 （空）要么为 1 （被占据）。
+
+给你邮票的尺寸为 stampHeight x stampWidth 。我们想将邮票贴进二进制矩阵中，且满足以下 限制 和 要求 ：
+
+覆盖所有 空 格子。
+不覆盖任何 被占据 的格子。
+我们可以放入任意数目的邮票。
+邮票可以相互有 重叠 部分。
+邮票不允许 旋转 。
+邮票必须完全在矩阵 内 。
+如果在满足上述要求的前提下，可以放入邮票，请返回 true ，否则返回 false 。
+
+示例 1：
+输入：grid = [[1,0,0,0],[1,0,0,0],[1,0,0,0],[1,0,0,0],[1,0,0,0]], stampHeight = 4, stampWidth = 3
+输出：true
+解释：我们放入两个有重叠部分的邮票（图中标号为 1 和 2），它们能覆盖所有与空格子。
+
+示例 2：
+输入：grid = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], stampHeight = 2, stampWidth = 2 
+输出：false 
+解释：没办法放入邮票覆盖所有的空格子，且邮票不超出网格图以外。
+
+提示：
+m == grid.length
+n == grid[r].length
+1 <= m, n <= 105
+1 <= m * n <= 2 * 105
+grid[r][c] 要么是 0 ，要么是 1 。
+1 <= stampHeight, stampWidth <= 105
+
+/*
+我们考虑邮票的左上角。在一个格子(i,j)可以成为合法的左上角，也即(i,j)的矩形范围内都没有坏格子的情况下，我们应当贪心地以它为左上角贴一枚邮票——因为我们并不怕重复，而是怕遗漏。这里，对于坏格子的统计，可以用二维前缀和进行。
+
+这样的贴法可以保证不会有坏格子被覆盖到。接下来，我们需要检查是否每个好格子都被覆盖。朴素的想法是在上一步操作中，每贴一张邮票，就对邮票覆盖的所有格子进行标记。但在邮票比较大的情况下，这样做会超时。在比赛中，我是采用的二维树状数组来进行区间更新。但实际上，我们只需要再使用一次前缀和就可以解决第二部分的问题。
+
+考虑一个格子(i,j)，它被覆盖，当且仅当(i-h+1,j-w+1)→(i,j)这一矩形范围内存在邮票的左上角。所以，我们在上一步中把所有成为左上角的格子进行标记，对这个标记数组再计算一次前缀和，就可以快速求出每个格子是否被覆盖了。
+
+时间复杂度O(NM)。
+空间复杂度O(NM)。
+
+作者：吴自华
+链接：https://leetcode-cn.com/circle/discuss/IqKOXp/view/D1Eado/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+*/
+
+
+
+//改写的，记录右下角位置
+/*
+class Solution {
+public:
+    vector<vector<int>> getPresum(vector<vector<int>>& grid){
+        const int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> ps(m + 1, vector<int>(n + 1));
+        for (int i = 1; i <= m; ++ i){
+            for (int j = 1; j <= n; ++ j){
+                ps[i][j] = ps[i - 1][j] - ps[i - 1][j - 1] + ps[i][j - 1] + grid[i - 1][j - 1];
+            }
+        }
+        return ps;
+    }
+
+    bool possibleToStamp(vector<vector<int>>& grid, int stampHeight, int stampWidth) {
+        auto ps = getPresum(grid);
+        const int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> paint(m, vector<int>(n));
+        for (int i = stampHeight; i <= m; ++ i){
+            for (int j = stampWidth; j <= n; ++ j){
+                if (!grid[i - 1][j - 1] and ps[i][j] - ps[i - stampHeight][j] - ps[i][j - stampWidth] + ps[i - stampHeight][j - stampWidth] == 0)
+                    paint[i - 1][j - 1] = 1;
+            }
+        }
+        
+        // for (int i =0; i <m; ++ i) {for (int j= 0; j < n; ++ j) cout <<paint[i][j] << " ";cout << endl;}
+        ps = getPresum(paint);
+        for (int i = 0; i < m; ++ i){
+            for (int j = 0; j < n; ++ j){
+                if (!grid[i][j]){
+                    int x = min(i + stampHeight, m), y = min(j + stampWidth, n);
+                    if (ps[x][y] - ps[x][j] - ps[i][y] + ps[i][j] == 0)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+};
+*/
