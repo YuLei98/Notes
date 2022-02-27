@@ -1,0 +1,148 @@
+给你一个整数 n 表示某所大学里课程的数目，编号为 1 到 n ，数组 dependencies 中， dependencies[i] = [xi, yi]  表示一个先修课的关系，也就是课程 xi 必须在课程 yi 之前上。同时你还有一个整数 k 。
+
+在一个学期中，你 最多 可以同时上 k 门课，前提是这些课的先修课在之前的学期里已经上过了。
+
+请你返回上完所有课最少需要多少个学期。题目保证一定存在一种上完所有课的方式。
+
+ 
+
+示例 1：
+
+
+
+输入：n = 4, dependencies = [[2,1],[3,1],[1,4]], k = 2
+输出：3 
+解释：上图展示了题目输入的图。在第一个学期中，我们可以上课程 2 和课程 3 。然后第二个学期上课程 1 ，第三个学期上课程 4 。
+示例 2：
+
+
+
+输入：n = 5, dependencies = [[2,1],[3,1],[4,1],[1,5]], k = 2
+输出：4 
+解释：上图展示了题目输入的图。一个最优方案是：第一学期上课程 2 和 3，第二学期上课程 4 ，第三学期上课程 1 ，第四学期上课程 5 。
+示例 3：
+
+输入：n = 11, dependencies = [], k = 2
+输出：6
+ 
+
+提示：
+
+1 <= n <= 15
+1 <= k <= n
+0 <= dependencies.length <= n * (n-1) / 2
+dependencies[i].length == 2
+1 <= xi, yi <= n
+xi != yi
+所有先修关系都是不同的，也就是说 dependencies[i] != dependencies[j] 。
+题目输入的图是个有向无环图。
+
+/*
+class Solution {
+public:
+    int minNumberOfSemesters(int n, vector<vector<int>>& dependencies, int k) {
+        vector<int> pre(n); //如果pre[i]的二进制第j位是1,表示j到i有一条边
+        for(auto& e : dependencies){
+            e[0] -= 1; //序号变成[0,n)
+            e[1] -= 1;
+            pre[e[1]] |= 1 << e[0]; //根据定义,将pre[e[1]]的第e[0]位变成1
+        }
+        //如何用二进制表示集合:
+        //i表示一个课程集合,如果i的二进制第j位1,那么表示第j个课程属于这个集合
+        //i的取值范围是从二进制00...00到二进制11...11,也就是从0到(1<<n)-1
+        vector<int> dp(1 << n, n);
+        //dp[i]表示学完i表示的课程集合最少步数,初始化成n,因为学完所有课不可能超过n步
+        dp[0] = 0; //不学任何课程只需要0步
+        for(int i = 0; i < (1 << n); i += 1){//按某个顺序枚举i
+            int ex = 0; //用ex表示学完i的课程后现在可以学哪些课程,如果ex的二进制第j位1,那么表示可以先第j个课程
+            for(int j = 0; j < n; j += 1) if((i & pre[j]) == pre[j]) ex |= 1 << j;
+            //枚举所有课程,(i&pre[j])==pre[j]表示pre[j]是i的子集,如果i包含pre[j],那么就可以学习j
+            ex &= ~i;//从ex里去掉i,避免重复
+            for(int s = ex; s; s = (s - 1) & ex) //这样可以枚举ex的所有非空子集s,具体见搜索引擎
+                if(__builtin_popcount(s) <= k) //如果这个集合大小小于等于k
+                    dp[i | s] = min(dp[i | s], dp[i] + 1);
+                    //更新答案,由于i<(i|s),所以可以按i从小到大的顺序枚举
+        }
+        return dp.back();//最后一个值,也就是dp[(1<<n)-1]
+    }
+};
+
+*/
+// 作者：何逊
+// 链接：https://leetcode-cn.com/circle/discuss/zPlu04/view/bivCj2/
+// 来源：力扣（LeetCode）
+// 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
+/*
+class Solution {
+public:
+    int minNumberOfSemesters(int n, vector<vector<int>>& relations, int k) {
+        int nn = relations.size();
+        vector<vector<int>> graph(n + 1, vector<int>(n + 1));
+        vector<int> indegree(n + 1);
+        for (auto & rel : relations) {
+            int u = rel[0] - 1, v = rel[1] - 1;
+            graph[u][v] = 1;
+            indegree[v] ++;
+        }
+        unordered_map<int, bool> v1;
+        auto valid1 = [&] (int i) -> bool {    
+            if (v1.count(i)) return v1[i];    
+            for (int j = 0; j < n; ++ j) {
+                if ((i & (1 << j)) == 0) continue;
+                for (int k = 0; k < n; ++ k) {
+                    if (((i >> k) & 1) == 1) continue;
+                    if (graph[k][j]) {
+                        v1[i] = false;
+                        return false;
+                    }
+                }
+            }
+            v1[i] = true;
+            return true;
+        };
+        unordered_map<int, bool> v2;
+        auto valid2 = [&] (int msk) -> bool {
+            if (v2.count(msk)) return v2[msk];
+            for (int a = 0; a < n; ++ a) {
+                if ((msk & (1 << a)) == 0) continue;
+                for (int b = 0; b < n; ++ b) {
+                    if ((msk & (1 << b)) == 0) continue;
+                    if (graph[b][a]) {
+                        return v2[msk] = false; 
+                    }
+                }
+            }
+            return v2[msk] = true;
+
+        };
+        vector<int> f(1 << n, n);
+        for (int i = 1; i < 1 << n; ++ i) {
+            if (!valid1(i)) continue;
+            bool flag = true;                             // 设置初始状态，没有前置课程的
+            for (int j = 0; j < n; ++ j) {
+                if ((i & (1 << j)) == 0) continue;
+                if (indegree[j]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                int c = __builtin_popcount(i);
+                f[i] = c / k + (c % k != 0);
+                continue;
+            }
+            for (int j = i; j; j = i & (j - 1)) {           // 枚举当前学的课程的所有子集
+                int msk = i ^ j;                            // 新学的课程
+                // if (!valid1(j) or !valid2(msk)) continue;
+                if (!valid2(msk)) continue;            // 只需要判断新学的课程
+                int nc = __builtin_popcount(msk);
+                f[i] = min(f[i], f[j] + nc / k + (nc % k != 0));
+            }
+        }
+        return f.back();
+    }
+};
+*/
