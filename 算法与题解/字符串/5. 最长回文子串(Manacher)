@@ -1,0 +1,65 @@
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+ 
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+示例 2：
+
+输入：s = "cbbd"
+输出："bb"
+ 
+
+提示：
+
+1 <= s.length <= 1000
+s 仅由数字和英文字母组成
+
+
+/*
+class Solution {
+public:
+    string longestPalindrome(string ss) {
+        int maxradius = 0;
+        int ansidx;
+        string s("^#");
+        for (char c: ss) {
+            s += c;
+            s += '#';
+        }
+        s += '$';
+        const int n = s.length();
+        // 回文半径
+        vector<int> p(n);
+        int right = -1, j = -1;
+        for (int i = 1; i < n - 1; ++ i) {
+            if (i < right) {
+                p[i] = min(p[2 * j - i], right - i);
+            } else
+                p[i] = 1;
+            
+            while (s[i - p[i]] == s[i + p[i]]) 
+                p[i] ++;
+            if (right < i + p[i]) {
+                j = i;
+                right = i + p[i];
+            }
+            // 最长子回文串长度为 p[i] - 1
+            if (maxradius < p[i]) {
+                maxradius = p[i];
+                ansidx = i - p[i] + 1;
+            }
+        }
+        string ans;
+        for (char c : s.substr(ansidx, 2 * maxradius - 1)) {
+            if (c != '#') {
+                ans += c;
+            }
+        }
+        return ans;
+    }
+};
+*/
