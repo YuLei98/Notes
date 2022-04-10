@@ -1,0 +1,47 @@
+
+
+//  不含前导零且相邻两个数字之差至少为 22 的正整数被称为 windy 数。windy 想知道，在 aa 和 bb 之间，包括 aa 和 bb ，总共有多少个 windy 数？
+
+
+#include <iostream>
+#include <memory.h>
+#include <vector>
+using namespace std;
+
+int f[12][10];
+int v[12];
+
+int solve(int n);
+int dfs(int pos, int pre, bool lead, bool limit);
+signed main() {
+    int a, b; cin >> a >> b;
+    int cnt1 = solve(a - 1);
+    int cnt2 = solve(b);
+
+    cout << cnt2 - cnt1 << endl;
+}
+
+int solve(int n) {
+    memset(f, -1, sizeof(f));
+    int pos = 0;
+    while (n) {
+        v[pos ++] = n % 10;
+        n /= 10;
+    }    
+    return dfs(pos - 1, -2, true, true);
+}
+int dfs(int pos, int pre, bool lead, bool limit) {
+    if (pos == -1) return 1;
+    if (!limit and f[pos][pre] != -1) return f[pos][pre];
+    int up = limit ? v[pos] : 9;
+    int tmp = 0;
+    for (int i = 0; i <= up; ++ i) {
+        // 有前导零则可当前位可取任意数，否则和前一位的差不能超过2
+        if (!lead and abs(i - pre) < 2) continue;
+        tmp += dfs(pos - 1, i, lead and !i, limit && i == v[pos]);
+    }
+    // 没有前导零且无最高位限制
+    if (!limit and !lead)
+        f[pos][pre] = tmp;
+    return tmp;
+}
