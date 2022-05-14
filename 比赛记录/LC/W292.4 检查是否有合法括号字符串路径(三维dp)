@@ -1,0 +1,99 @@
+一个括号字符串是一个 非空 且只包含 '(' 和 ')' 的字符串。如果下面 任意 条件为 真 ，那么这个括号字符串就是 合法的 。
+
+字符串是 () 。
+字符串可以表示为 AB（A 连接 B），A 和 B 都是合法括号序列。
+字符串可以表示为 (A) ，其中 A 是合法括号序列。
+给你一个 m x n 的括号网格图矩阵 grid 。网格图中一个 合法括号路径 是满足以下所有条件的一条路径：
+
+路径开始于左上角格子 (0, 0) 。
+路径结束于右下角格子 (m - 1, n - 1) 。
+路径每次只会向 下 或者向 右 移动。
+路径经过的格子组成的括号字符串是 合法 的。
+如果网格图中存在一条 合法括号路径 ，请返回 true ，否则返回 false 。
+
+示例 1：
+输入：grid = [["(","(","("],[")","(",")"],["(","(",")"],["(","(",")"]]
+输出：true
+解释：上图展示了两条路径，它们都是合法括号字符串路径。
+第一条路径得到的合法字符串是 "()(())" 。
+第二条路径得到的合法字符串是 "((()))" 。
+注意可能有其他的合法括号字符串路径。
+
+示例 2：
+输入：grid = [[")",")"],["(","("]]
+输出：false
+解释：两条可行路径分别得到 "))(" 和 ")((" 。由于它们都不是合法括号字符串，我们返回 false 。
+ 
+
+提示：
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 100
+grid[i][j] 要么是 '(' ，要么是 ')' 。
+
+// 错误解法，初始化的地方错误
+/*
+class Solution {
+public:
+    bool hasValidPath(vector<vector<char>>& grid) {
+        const int m = grid.size(), n = grid[0].size();
+        if ((m + n) % 2 == 0 || grid[0][0] == ')' || grid[m - 1][n - 1] == '(') return false;
+        
+        vector<vector<vector<int>>> f(m + 1, vector<vector<int>>(n + 1, vector<int>((m + n) / 2 + 2, 0)));
+
+        // 不能这样初始化
+        for (int i = 1; i <= m; ++ i) f[i][n][0] = 1;
+        for (int i = 1; i <= n; ++ i) f[m][i][0] = 1;
+
+        for (int i = 1; i <= m; ++ i) {
+            for (int j = 1; j <= n; ++ j) {
+                if (grid[i - 1][j - 1] == '(') {
+                    for (int k = 1; k <= (m + n) / 2; ++ k) {
+                        f[i][j][k] |= f[i - 1][j][k - 1] | f[i][j - 1][k - 1];
+                    }   
+                } else {
+                    for (int k = 0; k <= (m + n) / 2; ++ k) {
+                        f[i][j][k] |= f[i - 1][j][k + 1] | f[i][j - 1][k + 1];
+                    }   
+                }
+            }
+        }
+        for (int i = 0; i <= (m + n) / 2; ++ i) if (f[m][n][i]) cout << i << " ";
+            // cout << f[m][n][i] << " ";
+        return f[m][n][0];
+    }
+};
+*/
+
+/*
+class Solution {
+public:
+    bool hasValidPath(vector<vector<char>>& grid) {
+        const int m = grid.size(), n = grid[0].size();
+        if ((m + n) % 2 == 0 || grid[0][0] == ')' || grid[m - 1][n - 1] == '(') return false;
+        
+        int s = (m + n) / 2;
+        vector<vector<vector<int>>> f(m, vector<vector<int>>(n, vector<int>(s + 1, 0)));
+        f[0][0][1] = 1;
+        for (int i = 0; i < m; i ++) {
+            for (int j = 0; j < n; j ++) {
+                if (i + 1 < m) {
+                    for (int k = 0; k <= s; ++ k) {
+                        if (!f[i][j][k])  continue;
+                        int l = k + (grid[i + 1][j] == '(' ? 1 : -1);
+                        if (l >= 0 and l <= s) f[i + 1][j][l] = 1;
+                    }
+                }
+                if (j + 1 < n) {
+                    for (int k = 0; k <= s; k ++) {
+                        if (!f[i][j][k])  continue;
+                        int l = k + (grid[i][j + 1] == '(' ? 1 : -1);
+                        if (l >= 0 and l <= s) f[i][j + 1][l] = 1;
+                    }
+                }
+            }
+        }
+        return f[m - 1][n - 1][0];
+    }
+};
+*/
