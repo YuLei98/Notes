@@ -1,0 +1,39 @@
+class SegmentTree {
+    vector<int> sum, tag;
+public:
+    SegmentTree(int N): sum(N << 2), tag(N << 2) {}
+    void push_up(int rt) {   sum[rt] = sum[rt<<1] + sum[rt<<1|1]; }
+    void push_down(int rt, int lc, int rc) {
+        int mid = (lc + rc) / 2;
+        tag[rt<<1] += tag[rt], tag[rt<<1|1] += tag[rt];
+        sum[rt<<1] += (mid - lc + 1) * tag[rt], sum[rt<<1|1] += (rc - mid) * tag[rt];
+        tag[rt] = 0;
+    }
+    void update(int rt, int lc, int rc, int l, int r, int v) {
+        if (l <= lc && rc <= r) {
+            sum[rt] += v * (rc - lc + 1);
+            tag[rt] += v;
+            return;
+        }
+        push_down(rt, lc, rc);
+        int mid = (lc + rc) / 2;
+        if (l <= mid) update(rt<<1, lc, mid, l, r, v);
+        if (r > mid) update(rt<<1|1, mid+1, rc, l, r, v);
+        push_up(rt);
+    }
+    int query(int rt, int lc, int rc, int l, int r) {
+        if (l <= lc && rc <= r) return sum[rt];
+        int mid = (lc + rc) / 2;
+        push_down(rt, lc, rc);
+        int res = 0;
+        if (l <= mid) res += query(rt<<1, lc, mid, l, r);
+        if (r > mid) res += query(rt<<1|1, mid+1, rc, l, r);
+        return res;
+    }
+
+
+    // void print() {
+    //     for (int x: sum) cout << x << " ";cout<< endl;
+    //     for (int x: tag) cout << x << " ";cout<< endl;
+    // }
+};
