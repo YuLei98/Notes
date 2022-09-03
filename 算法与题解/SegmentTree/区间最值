@@ -1,0 +1,25 @@
+    // 索引从1开始
+    class SegmentTree {
+        vector<int> mval;
+    public:
+        SegmentTree(int N): mval(N << 2) {}
+        void push_up(int rt) {   mval[rt] = max(mval[rt<<1], mval[rt<<1|1]); }
+        void update(int rt, int lc, int rc, int l, int r, int v) {
+            if (l <= lc && rc <= r) {
+                mval[rt] = v;
+                return;
+            }
+            int mid = (lc + rc) / 2;
+            if (l <= mid) update(rt<<1, lc, mid, l, r, v);
+            if (r > mid) update(rt<<1|1, mid+1, rc, l, r, v);
+            push_up(rt);
+        }
+        int query(int rt, int lc, int rc, int l, int r) {
+            if (l <= lc && rc <= r) return mval[rt];
+            int mid = (lc + rc) / 2;
+            int res = 0;
+            if (l <= mid) res = max(res, query(rt<<1, lc, mid, l, r));
+            if (r > mid) res = max(res, query(rt<<1|1, mid+1, rc, l, r));
+            return res;
+        }
+    };
