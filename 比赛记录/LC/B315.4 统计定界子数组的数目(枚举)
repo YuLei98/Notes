@@ -48,3 +48,26 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    ll calc(vector<int> nums, int minK, int maxK) {
+        ll cnt = 0;
+        nums.PB(maxK + 1);
+        ll ans = 0;
+        REP(i, 0, sz(nums)) {
+            if(nums[i] < minK or nums[i] > maxK) {
+                ans += cnt * (cnt + 1) / 2;
+                cnt = 0;
+            } else {
+                cnt++;
+            }
+        }
+        // cout << minK << " " << maxK << " " << ans << endl;
+        return ans;
+    }
+    
+    long long countSubarrays(vector<int> &nums, int mi, int mx) {
+        return calc(nums, mi, mx) - calc(nums, mi + 1, mx) - calc(nums, mi, mx - 1) + calc(nums, mi + 1, mx - 1);
+    }
+};
