@@ -1,0 +1,87 @@
+给你一个字符串 s ，每个字符是数字 '1' 到 '9' ，再给你两个整数 k 和 minLength 。
+
+如果对 s 的分割满足以下条件，那么我们认为它是一个 完美 分割：
+
+s 被分成 k 段互不相交的子字符串。
+每个子字符串长度都 至少 为 minLength 。
+每个子字符串的第一个字符都是一个 质数 数字，最后一个字符都是一个 非质数 数字。质数数字为 '2' ，'3' ，'5' 和 '7' ，剩下的都是非质数数字。
+请你返回 s 的 完美 分割数目。由于答案可能很大，请返回答案对 109 + 7 取余 后的结果。
+
+一个 子字符串 是字符串中一段连续字符串序列。
+
+
+示例 1：
+输入：s = "23542185131", k = 3, minLength = 2
+输出：3
+解释：存在 3 种完美分割方案：
+"2354 | 218 | 5131"
+"2354 | 21851 | 31"
+"2354218 | 51 | 31"
+
+示例 2：
+输入：s = "23542185131", k = 3, minLength = 3
+输出：1
+解释：存在一种完美分割方案："2354 | 218 | 5131" 。
+
+示例 3：
+输入：s = "3312958", k = 3, minLength = 1
+输出：1
+解释：存在一种完美分割方案："331 | 29 | 58" 。
+
+提示：
+1 <= k, minLength <= s.length <= 1000
+s 每个字符都为数字 '1' 到 '9' 之一。
+
+作者：TsReaper
+链接：https://leetcode.cn/circle/discuss/bb9NEI/view/c5Ok3w/
+
+
+
+class Solution:
+    def beautifulPartitions(self, s: str, k: int, minLength: int) -> int:
+        prime = {'2', '3', '5', '7'}
+        if s[0] not in prime or s[-1] in prime: return 0
+
+        MOD = int(1e9+7)
+        n = len(s)
+        
+        f = [[0]*(k+1) for _ in range(n+1)]
+        g = [[0]*(k+1) for _ in range(n+1)]
+        # f[0][0] = 1
+        g[0][0] = 1
+
+        for i in range(1, n+1):
+            # 枚举 i 能否成为分割点
+            if i >= minLength and s[i-1] not in prime and (i == n or s[i] in prime):
+                for j in range(1, k+1):
+                    f[i][j] = g[i-minLength][j-1]
+            for j in range(k+1):
+                g[i][j] = (g[i-1][j]+f[i][j])%MOD
+
+        return f[n][k]
+
+
+// Sol2
+class Solution {
+public:
+    int beautifulPartitions(string s, int k, int ml) {
+        int n = s.size();
+        long long mod = 1e9 + 7;
+        vector<vector<long long>> dp(n + 1, vector<long long>(k + 1, 0));
+        dp[0][0] = 1;
+        for (int j = 1; j <= k; j++) {
+            vector<long long> sum(n + 1, 0);
+            for (int i = 1; i <= n; i++) {
+                long long x = 0;
+                if (i - ml >= 0 && isprime(s[i - ml])) {
+                    x = dp[i - ml][j - 1];
+                }
+                sum[i] = (sum[i - 1] + x) % mod;
+                if (!isprime(s[i - 1])) {
+                    dp[i][j] = (dp[i][j] + sum[i]) % mod;
+                }
+            }
+        }
+        return dp[n][k];
+    }
+};
